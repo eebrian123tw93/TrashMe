@@ -1,8 +1,8 @@
-package com.brianlu.androidtemplate.Api;
+package com.brianlu.trashme.Api;
 
 import android.util.Base64;
 
-import com.brianlu.androidtemplate.Model.User;
+import com.brianlu.trashme.Model.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

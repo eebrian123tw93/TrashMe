@@ -1,4 +1,4 @@
-package com.brianlu.androidtemplate.Api;
+package com.brianlu.trashme.Api;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;

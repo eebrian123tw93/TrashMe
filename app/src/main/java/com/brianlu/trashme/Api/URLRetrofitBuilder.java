@@ -1,4 +1,4 @@
-package com.brianlu.androidtemplate.Api;
+package com.brianlu.trashme.Api;
 
 import com.google.gson.GsonBuilder;
 

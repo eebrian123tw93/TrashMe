@@ -1,4 +1,4 @@
-package com.brianlu.androidtemplate.Model;
+package com.brianlu.trashme.Model;
 
 
 import android.util.Base64;

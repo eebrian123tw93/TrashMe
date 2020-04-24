@@ -1,9 +1,9 @@
-package com.brianlu.androidtemplate.Base;
+package com.brianlu.trashme.Base;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.brianlu.androidtemplate.Model.User;
+import com.brianlu.trashme.Model.User;
 import com.google.gson.Gson;
 
 public class BasePresenter {

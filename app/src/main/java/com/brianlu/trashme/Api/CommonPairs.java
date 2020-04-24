@@ -1,4 +1,4 @@
-package com.brianlu.androidtemplate.Api;
+package com.brianlu.trashme.Api;
 
 import java.nio.charset.Charset;
 import java.security.cert.X509Certificate;

@@ -1,4 +1,4 @@
-package com.brianlu.androidtemplate.Base;
+package com.brianlu.trashme.Base;
 
 import android.annotation.SuppressLint;
 import android.app.Application;

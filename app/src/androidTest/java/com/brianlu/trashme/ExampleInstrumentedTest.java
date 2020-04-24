@@ -1,4 +1,4 @@
-package com.brianlu.androidtemplate;
+package com.brianlu.trashme;
 
 import android.content.Context;
 

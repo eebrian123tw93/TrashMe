@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.brianlu.androidtemplate">
+    package="com.brianlu.trashme">
 
     <application
-        android:name=".Base.BaseApplication"
+        android:name="com.brianlu.trashme.Base.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="InnerclassSeparator">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.brianlu.trashme.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
