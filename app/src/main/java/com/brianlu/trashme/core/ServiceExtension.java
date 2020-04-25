@@ -1,4 +1,4 @@
-package com.brianlu.trashme.base;
+package com.brianlu.trashme.core;
 
 import com.brianlu.trashme.model.Result;
 import com.google.gson.GsonBuilder;
@@ -9,9 +9,10 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
-public class BaseService {
+public interface ServiceExtension {
 
-    private Observable<Result> mapToResult(Observable<Response<ResponseBody>> response, boolean isObserveOnIO) {
+    default Observable<Result> mapToResult(Observable<Response<ResponseBody>> response, boolean isObserveOnIO) {
+
         return response.subscribeOn(Schedulers.io())
                 .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
@@ -25,5 +26,11 @@ public class BaseService {
                 .doOnNext(Result::checkAPIResultOk);
     }
 
+    default Observable<String> mapToPayLoad(Observable<Response<ResponseBody>> response, boolean isObserveOnIO) {
+        return mapToResult(response, isObserveOnIO)
+                .doOnNext(Result::checkPayLoadIsNotNuLL)
+                .map(Result::getPayload);
+
+    }
 
 }

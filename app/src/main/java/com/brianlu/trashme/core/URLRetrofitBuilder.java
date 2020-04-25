@@ -1,4 +1,4 @@
-package com.brianlu.trashme.Core;
+package com.brianlu.trashme.core;
 
 import com.google.gson.GsonBuilder;
 

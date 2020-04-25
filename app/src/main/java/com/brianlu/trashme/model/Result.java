@@ -21,4 +21,5 @@ public class Result {
             throw new Exception("payload is empty");
         }
     }
+
 }

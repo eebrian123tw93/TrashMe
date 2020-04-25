@@ -1,11 +1,11 @@
-package com.brianlu.trashme.Api;
+package com.brianlu.trashme.api;
 
 import android.util.Base64;
 
-import com.brianlu.trashme.Core.AppEnvironmentVariables;
-import com.brianlu.trashme.Core.URLRetrofitBuilder;
-import com.brianlu.trashme.Model.Result;
-import com.brianlu.trashme.Model.User;
+import com.brianlu.trashme.core.ServiceExtension;
+import com.brianlu.trashme.core.AppEnvironmentVariables;
+import com.brianlu.trashme.core.URLRetrofitBuilder;
+import com.brianlu.trashme.model.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -15,6 +15,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+
 
 import java.lang.reflect.Type;
 
@@ -27,33 +28,29 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 
-public class ApiService {
-    private UserApi userApi;
+public class UserService implements ServiceExtension {
+    private final UserApi userApi;
 
-    private ApiService() {
+    private UserService() {
         URLRetrofitBuilder urlRetrofitBuilder = new URLRetrofitBuilder();
-        String baseUrl = AppEnvironmentVariables.baseUrl;
+        String baseUrl = AppEnvironmentVariables.BASE_URL;
         Retrofit retrofit = urlRetrofitBuilder.buildRetrofit(baseUrl, true);
         userApi = retrofit.create(UserApi.class);
     }
 
     // 獲取實例
-    public static ApiService getInstance() {
-        return ApiService.SingletonHolder.INSTANCE;
+    public static UserService getInstance() {
+        return UserService.SingletonHolder.INSTANCE;
     }
 
-    public Observable<Result> register(@NonNull User user, boolean isObserveOnIO) {
+    public Observable<User> register(@NonNull User user, boolean isObserveOnIO) {
 
         Gson gson = new Gson();
         String json = gson.toJson(user);
-        return userApi.register(json)
-                .subscribeOn(Schedulers.io())
-                .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .map(Response::body)
-                .map(ResponseBody::string)
-                .map(s -> new GsonBuilder().create().fromJson(s, Result.class))
-                .doOnNext(Result::checkAPIResultOk);
+
+        return mapToPayLoad(userApi.register(json), isObserveOnIO)
+                .map(s -> new GsonBuilder().create().fromJson(s, User.class));
+
     }
 
     public Observable<Response<ResponseBody>> login(@NonNull User user, boolean isObserveOnIO) {
@@ -83,7 +80,7 @@ public class ApiService {
 
     // 創建實例
     private static class SingletonHolder {
-        private static final ApiService INSTANCE = new ApiService();
+        private static final UserService INSTANCE = new UserService();
     }
 
     private static class ByteArrayToBase64TypeAdapter implements JsonSerializer<byte[]>, JsonDeserializer<byte[]> {
@@ -95,5 +92,7 @@ public class ApiService {
             return new JsonPrimitive(Base64.encodeToString(src, Base64.NO_WRAP));
         }
     }
+
+
 }
 

@@ -1,4 +1,4 @@
-package com.brianlu.trashme.Api;
+package com.brianlu.trashme.api;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -11,20 +11,20 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-public interface UserApi {
+interface UserApi {
 
 
     @Headers("Content-Type:application/json")
     @POST("/TrashMe/User/Register")
     Observable<Response<ResponseBody>> register(@Body String s);
 
-    @GET("/hidp/checkUserExist/")
+    @GET("/TrashMe/checkUserExist/")
     Observable<Response<ResponseBody>> login(@Header("Authorization") String authKey);
 
-    @DELETE("/hidp/deleteUser/")
+    @DELETE("/TrashMe/deleteUser/")
     Observable<Response<ResponseBody>> deleteUser(@Header("Authorization") String authKey);
 
-    @GET("/hidp/public/forgotPassword/")
+    @GET("/TrashMe/public/forgotPassword/")
     Observable<Response<ResponseBody>> forgotPassword(@Query("email") String email);
 
 }

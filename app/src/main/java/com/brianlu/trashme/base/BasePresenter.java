@@ -1,9 +1,9 @@
-package com.brianlu.trashme.Base;
+package com.brianlu.trashme.base;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.brianlu.trashme.Model.User;
+import com.brianlu.trashme.model.User;
 import com.google.gson.Gson;
 
 public class BasePresenter {
@@ -11,7 +11,7 @@ public class BasePresenter {
     private static final String USER_PROFILE = "user_profile";
     protected static User user =  new User("test", "test", "");
     static UserListener userListener;
-    private static String PROFILE = "profile";
+    private static final String PROFILE = "profile";
     protected Context context;
 
     public BasePresenter() {

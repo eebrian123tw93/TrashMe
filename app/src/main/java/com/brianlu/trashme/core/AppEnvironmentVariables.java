@@ -1,5 +1,7 @@
-package com.brianlu.trashme.Core;
+package com.brianlu.trashme.core;
 
 public class AppEnvironmentVariables {
-    public static String baseUrl = "http://ec2-18-140-5-195.ap-southeast-1.compute.amazonaws.com:8080/";
+    public static final String BASE_URL = "http://ec2-18-140-5-195.ap-southeast-1.compute.amazonaws.com:8080/";
+
+
 }
