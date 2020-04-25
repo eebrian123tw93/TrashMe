@@ -31,10 +31,10 @@ public class BasePresenter {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PROFILE, Context.MODE_PRIVATE);
         String profileJson = sharedPreferences.getString(USER_PROFILE, "");
         User user = new Gson().fromJson(profileJson, User.class);
-        if (user == null || user.getUserId() == null || user.getPassword() == null || user.getUserId().isEmpty() || user.getPassword().isEmpty()) {
+        if (user == null || user.getNickname() == null || user.getPassword() == null || user.getNickname().isEmpty() || user.getPassword().isEmpty()) {
             BasePresenter.user = null;
         } else {
-            BasePresenter.user = new User(user.getUserId(), user.getPassword(), user.getEmail());
+            BasePresenter.user = new User(user.getNickname(), user.getPassword(), user.getEmail());
         }
     }
 

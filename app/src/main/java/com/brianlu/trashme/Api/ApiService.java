@@ -2,8 +2,10 @@ package com.brianlu.trashme.Api;
 
 import android.util.Base64;
 
+import com.brianlu.trashme.Model.Result;
 import com.brianlu.trashme.Model.User;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -37,15 +39,18 @@ public class ApiService {
         return ApiService.SingletonHolder.INSTANCE;
     }
 
-    public Observable<Response<ResponseBody>> register(@NonNull User user, boolean isObserveOnIO) {
+    public Observable<Result> register(@NonNull User user, boolean isObserveOnIO) {
 
         Gson gson = new Gson();
-
         String json = gson.toJson(user);
         return api.register(json)
                 .subscribeOn(Schedulers.io())
                 .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io());
+                .unsubscribeOn(Schedulers.io())
+                .map(Response::body)
+                .map(ResponseBody::string)
+                .map(s -> new GsonBuilder().create().fromJson(s, Result.class))
+                .doOnNext(Result::checkAPIResultOk);
     }
 
     public Observable<Response<ResponseBody>> login(@NonNull User user, boolean isObserveOnIO) {

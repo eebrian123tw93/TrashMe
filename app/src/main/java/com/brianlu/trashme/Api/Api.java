@@ -15,7 +15,7 @@ public interface Api {
 
 
     @Headers("Content-Type:application/json")
-    @POST("/hidp/public/register")
+    @POST("/TrashMe/User/Register")
     Observable<Response<ResponseBody>> register(@Body String s);
 
     @GET("/hidp/checkUserExist/")

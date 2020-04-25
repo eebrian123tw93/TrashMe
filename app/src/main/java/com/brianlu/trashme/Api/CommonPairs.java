@@ -1,6 +1,7 @@
 package com.brianlu.trashme.Api;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
 
@@ -17,14 +18,14 @@ public class CommonPairs {
 
     private static final String TAG = "===CommonPairs";
     private static final int STATUS_CODE_AUTH_FAIL = 401;
-    private static final Charset UTF8 = Charset.forName("UTF-8");
+    private static final Charset UTF8 = StandardCharsets.UTF_8;
 
     /**
      * OkHttpClient trustAllCerts.
      *
      * @return OkHttpClient
      */
-    public OkHttpClient getUnsafeOkHttpClient() {
+    OkHttpClient getUnsafeOkHttpClient() {
         try {
             MyTrustManager myTrustManager = new MyTrustManager();
             // Create a trust manager that does not validate certificate chains
