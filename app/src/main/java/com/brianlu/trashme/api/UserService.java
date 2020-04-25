@@ -2,6 +2,8 @@ package com.brianlu.trashme.Api;
 
 import android.util.Base64;
 
+import com.brianlu.trashme.Core.AppEnvironmentVariables;
+import com.brianlu.trashme.Core.URLRetrofitBuilder;
 import com.brianlu.trashme.Model.Result;
 import com.brianlu.trashme.Model.User;
 import com.google.gson.Gson;
@@ -26,12 +28,13 @@ import retrofit2.Retrofit;
 
 
 public class ApiService {
-    private Api api;
+    private UserApi userApi;
 
     private ApiService() {
         URLRetrofitBuilder urlRetrofitBuilder = new URLRetrofitBuilder();
-        Retrofit retrofitArticleExcerptApi = urlRetrofitBuilder.buildRetrofit("http://ec2-54-169-251-7.ap-southeast-1.compute.amazonaws.com:10000/", true);
-        api = retrofitArticleExcerptApi.create(Api.class);
+        String baseUrl = AppEnvironmentVariables.baseUrl;
+        Retrofit retrofit = urlRetrofitBuilder.buildRetrofit(baseUrl, true);
+        userApi = retrofit.create(UserApi.class);
     }
 
     // 獲取實例
@@ -43,7 +46,7 @@ public class ApiService {
 
         Gson gson = new Gson();
         String json = gson.toJson(user);
-        return api.register(json)
+        return userApi.register(json)
                 .subscribeOn(Schedulers.io())
                 .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
@@ -55,7 +58,7 @@ public class ApiService {
 
     public Observable<Response<ResponseBody>> login(@NonNull User user, boolean isObserveOnIO) {
         String authKey = user.authKey();
-        return api.login(authKey)
+        return userApi.login(authKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
@@ -64,7 +67,7 @@ public class ApiService {
 
     public Observable<Response<ResponseBody>> deleteUser(@NonNull User user, boolean isObserveOnIO) {
         String authKey = user.authKey();
-        return api.deleteUser(authKey)
+        return userApi.deleteUser(authKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
@@ -72,7 +75,7 @@ public class ApiService {
     }
 
     public Observable<Response<ResponseBody>> forgotPassword(@NonNull String email, boolean isObserveOnIO) {
-        return api.forgotPassword(email)
+        return userApi.forgotPassword(email)
                 .subscribeOn(Schedulers.io())
                 .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());

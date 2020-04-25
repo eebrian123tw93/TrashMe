@@ -1,4 +1,4 @@
-package com.brianlu.trashme.Api;
+package com.brianlu.trashme.Core;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

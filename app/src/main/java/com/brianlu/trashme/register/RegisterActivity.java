@@ -1,4 +1,4 @@
-package com.brianlu.trashme.Register;
+package com.brianlu.trashme.register;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,12 +15,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.brianlu.trashme.R;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
-import static com.brianlu.trashme.Base.BaseApplication.getContext;
+import static com.brianlu.trashme.base.BaseApplication.getContext;
 
 public class RegisterActivity extends AppCompatActivity implements RegisterView, View.OnClickListener {
     private RegisterPresenter registerPresenter;
 
-    private EditText namenickEditText;
+    private EditText nicknameEditText;
     private EditText passwordEditText;
     private EditText emailEditText;
     private ProgressBar progressBar;
@@ -44,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView,
         setContentView(R.layout.activity_register);
 
 
-        namenickEditText = findViewById(R.id.nickname_editText);
+        nicknameEditText = findViewById(R.id.nickname_editText);
         passwordEditText = findViewById(R.id.password_editText);
         emailEditText = findViewById(R.id.email_editText);
         progressBar = findViewById(R.id.progressBar);
@@ -62,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView,
 
     @Override
     public void onClearText() {
-        namenickEditText.setText("");
+        nicknameEditText.setText("");
         passwordEditText.setText("");
         emailEditText.setText("");
         messageTextView.setText("");
@@ -96,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView,
                 if (view != null && imm != null) {
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
-                registerPresenter.doRegister(namenickEditText.getText().toString(), passwordEditText.getText().toString(), emailEditText.getText().toString());
+                registerPresenter.doRegister(nicknameEditText.getText().toString(), passwordEditText.getText().toString(), emailEditText.getText().toString());
                 break;
             case R.id.clear_button:
                 registerPresenter.clear();
