@@ -1,9 +1,13 @@
-package com.brianlu.trashme.Api;
+package com.brianlu.trashme.api;
 
 import android.util.Base64;
 
-import com.brianlu.trashme.Model.User;
+import com.brianlu.trashme.core.ServiceExtension;
+import com.brianlu.trashme.core.AppEnvironmentVariables;
+import com.brianlu.trashme.core.URLRetrofitBuilder;
+import com.brianlu.trashme.model.User;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -11,6 +15,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+
 
 import java.lang.reflect.Type;
 
@@ -23,34 +28,34 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 
-public class ApiService {
-    private Api api;
+public class UserService implements ServiceExtension {
+    private final UserApi userApi;
 
-    private ApiService() {
+    private UserService() {
         URLRetrofitBuilder urlRetrofitBuilder = new URLRetrofitBuilder();
-        Retrofit retrofitArticleExcerptApi = urlRetrofitBuilder.buildRetrofit("http://ec2-54-169-251-7.ap-southeast-1.compute.amazonaws.com:10000/", true);
-        api = retrofitArticleExcerptApi.create(Api.class);
+        String baseUrl = AppEnvironmentVariables.BASE_URL;
+        Retrofit retrofit = urlRetrofitBuilder.buildRetrofit(baseUrl, true);
+        userApi = retrofit.create(UserApi.class);
     }
 
     // 獲取實例
-    public static ApiService getInstance() {
-        return ApiService.SingletonHolder.INSTANCE;
+    public static UserService getInstance() {
+        return UserService.SingletonHolder.INSTANCE;
     }
 
-    public Observable<Response<ResponseBody>> register(@NonNull User user, boolean isObserveOnIO) {
+    public Observable<User> register(@NonNull User user, boolean isObserveOnIO) {
 
         Gson gson = new Gson();
-
         String json = gson.toJson(user);
-        return api.register(json)
-                .subscribeOn(Schedulers.io())
-                .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io());
+
+        return mapToPayLoad(userApi.register(json), isObserveOnIO)
+                .map(s -> new GsonBuilder().create().fromJson(s, User.class));
+
     }
 
     public Observable<Response<ResponseBody>> login(@NonNull User user, boolean isObserveOnIO) {
         String authKey = user.authKey();
-        return api.login(authKey)
+        return userApi.login(authKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
@@ -59,7 +64,7 @@ public class ApiService {
 
     public Observable<Response<ResponseBody>> deleteUser(@NonNull User user, boolean isObserveOnIO) {
         String authKey = user.authKey();
-        return api.deleteUser(authKey)
+        return userApi.deleteUser(authKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
@@ -67,7 +72,7 @@ public class ApiService {
     }
 
     public Observable<Response<ResponseBody>> forgotPassword(@NonNull String email, boolean isObserveOnIO) {
-        return api.forgotPassword(email)
+        return userApi.forgotPassword(email)
                 .subscribeOn(Schedulers.io())
                 .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
@@ -75,7 +80,7 @@ public class ApiService {
 
     // 創建實例
     private static class SingletonHolder {
-        private static final ApiService INSTANCE = new ApiService();
+        private static final UserService INSTANCE = new UserService();
     }
 
     private static class ByteArrayToBase64TypeAdapter implements JsonSerializer<byte[]>, JsonDeserializer<byte[]> {
@@ -87,5 +92,7 @@ public class ApiService {
             return new JsonPrimitive(Base64.encodeToString(src, Base64.NO_WRAP));
         }
     }
+
+
 }
 

@@ -87,3 +87,7 @@ lint/tmp/
 .idea/
 
 gradle/wrapper/
+
+app/release/
+
+app/

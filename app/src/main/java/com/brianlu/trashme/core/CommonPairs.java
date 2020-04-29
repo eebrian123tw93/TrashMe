@@ -1,6 +1,9 @@
-package com.brianlu.trashme.Api;
+package com.brianlu.trashme.core;
+
+import android.annotation.SuppressLint;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
 
@@ -13,18 +16,18 @@ import javax.net.ssl.X509TrustManager;
 
 import okhttp3.OkHttpClient;
 
-public class CommonPairs {
+class CommonPairs {
 
     private static final String TAG = "===CommonPairs";
     private static final int STATUS_CODE_AUTH_FAIL = 401;
-    private static final Charset UTF8 = Charset.forName("UTF-8");
+    private static final Charset UTF8 = StandardCharsets.UTF_8;
 
     /**
      * OkHttpClient trustAllCerts.
      *
      * @return OkHttpClient
      */
-    public OkHttpClient getUnsafeOkHttpClient() {
+    OkHttpClient getUnsafeOkHttpClient() {
         try {
             MyTrustManager myTrustManager = new MyTrustManager();
             // Create a trust manager that does not validate certificate chains
@@ -58,11 +61,13 @@ public class CommonPairs {
     /**
      * 實現 X509TrustManager 接口.
      */
-    public class MyTrustManager implements X509TrustManager {
+    static class MyTrustManager implements X509TrustManager {
+        @SuppressLint("TrustAllX509TrustManager")
         @Override
         public void checkClientTrusted(X509Certificate[] chain, String authType) {
         }
 
+        @SuppressLint("TrustAllX509TrustManager")
         @Override
         public void checkServerTrusted(X509Certificate[] chain, String authType) {
         }
@@ -74,7 +79,8 @@ public class CommonPairs {
     }
 
     // 實現 HostnameVerifier 接口
-    private class TrustAllHostnameVerifier implements HostnameVerifier {
+    private static class TrustAllHostnameVerifier implements HostnameVerifier {
+        @SuppressLint("BadHostnameVerifier")
         @Override
         public boolean verify(String hostname, SSLSession session) {
             return true;

@@ -1,4 +1,4 @@
-package com.brianlu.trashme.Api;
+package com.brianlu.trashme.core;
 
 import com.google.gson.GsonBuilder;
 
@@ -10,12 +10,12 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 /**
  * Created by max on 2018/1/11.
  */
-class URLRetrofitBuilder {
+public class URLRetrofitBuilder {
 
-    URLRetrofitBuilder() {
+    public URLRetrofitBuilder() {
     }
 
-    Retrofit buildRetrofit(String apiPath, boolean isSerializeNulls) {
+    public Retrofit buildRetrofit(String apiPath, boolean isSerializeNulls) {
 
         // 最後一定要是 "/" 結尾否則會報錯
         // excludeFieldsWithoutExposeAnnotation，Model 中需個別指定序列化、反序列化欄位，加上 @Expose 標籤
