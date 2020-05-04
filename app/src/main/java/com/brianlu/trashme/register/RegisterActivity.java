@@ -1,6 +1,7 @@
 package com.brianlu.trashme.register;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,13 +12,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.brianlu.trashme.R;
+import com.brianlu.trashme.core.View.ViewExtension;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import static com.brianlu.trashme.base.BaseApplication.getContext;
 
-public class RegisterActivity extends AppCompatActivity implements RegisterView, View.OnClickListener {
+public class RegisterActivity extends AppCompatActivity implements RegisterView, View.OnClickListener, ViewExtension {
     private RegisterPresenter registerPresenter;
 
     private EditText nicknameEditText;
@@ -58,6 +61,34 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView,
 
         registerPresenter = new RegisterPresenter(this);
         registerPresenter.setProgressBarVisibility(View.GONE);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        int color = Color.rgb(254, 59, 91);
+
+        CardView emailCardView = findViewById(R.id.email_cardView);
+        setRadiusBorder(emailCardView,Color.WHITE,color);
+        int emailRadius = emailCardView.getHeight() / 2;
+        emailCardView.setRadius(emailRadius);
+        CardView passwordCardView = findViewById(R.id.password_cardView);
+        setRadiusBorder(passwordCardView,Color.WHITE,color);
+        int passwordRadius = passwordCardView.getHeight() / 2;
+        passwordCardView.setRadius(passwordRadius);
+
+        CardView nicknameCardView = findViewById(R.id.nickname_cardView);
+        setRadiusBorder(nicknameCardView,Color.WHITE,color);
+        int nicknameRadius = passwordCardView.getHeight() / 2;
+        nicknameCardView.setRadius(nicknameRadius);
+
+
+        setRadiusBorder(registerButton, color, color);
+        setRadiusBorder(clearButton, Color.WHITE, color);
+        registerButton.setTextColor(Color.WHITE);
+        clearButton.setTextColor(color);
+
     }
 
     @Override

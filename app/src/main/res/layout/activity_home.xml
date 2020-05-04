@@ -125,9 +125,9 @@
 
                     <ImageView
                         android:id="@+id/imageView7"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="20dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -135,10 +135,9 @@
                         app:srcCompat="@drawable/recycle" />
 
                     <LinearLayout
-                        android:layout_width="132dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
                         android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -153,7 +152,7 @@
                             android:text="資源回收"
                             android:textAlignment="center"
                             android:textColor="#000000"
-                            android:textSize="20dp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -163,7 +162,7 @@
                             android:text="24NT/kg"
                             android:textAlignment="center"
                             android:textColor="#000000"
-                            android:textSize="20dp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -175,10 +174,9 @@
                     android:layout_weight="1">
 
                     <LinearLayout
-                        android:layout_width="132dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
                         android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -192,7 +190,7 @@
                             android:text="一般垃圾"
                             android:textAlignment="center"
                             android:textColor="#000000"
-                            android:textSize="20dp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -202,19 +200,66 @@
                             android:text="20NT/kg"
                             android:textAlignment="center"
                             android:textColor="#000000"
-                            android:textSize="20dp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
                     <ImageView
                         android:id="@+id/imageView6"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="20dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="10dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/trash" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/fahdsjkflhasf"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/fdsjfahsdl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="混合"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/fjadshladsf"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="30NT/kg"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/fahdsjkflhasf"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/mix" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>

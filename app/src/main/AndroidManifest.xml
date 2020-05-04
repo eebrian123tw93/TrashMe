@@ -23,6 +23,13 @@
 
         </activity>
         <activity android:name=".home.HomeActivity">
+
+
+        </activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".login.LoginActivity">
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,9 +37,16 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".login.LoginActivity"></activity>
-        <activity android:name=".register.RegisterActivity" />
+        <activity android:name=".register.RegisterActivity" >
+
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>

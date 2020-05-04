@@ -20,7 +20,7 @@ public interface ViewExtension {
         GradientDrawable drawable =  new GradientDrawable();
         drawable.setCornerRadius(radius);
         drawable.setColor(backgroundColor);
-        drawable.setStroke(5,borderColor);
+        drawable.setStroke(2,borderColor);
         view.setBackground(drawable);
     }
 
