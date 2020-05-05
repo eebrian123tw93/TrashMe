@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.brianlu.trashme.R;
+import com.brianlu.trashme.core.View.LoadingDialog;
 import com.brianlu.trashme.core.View.ViewExtension;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
@@ -26,12 +27,13 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView,
     private EditText nicknameEditText;
     private EditText passwordEditText;
     private EditText emailEditText;
-    private ProgressBar progressBar;
 
     private Button registerButton;
     private Button clearButton;
 
     private TextView messageTextView;
+
+    private LoadingDialog loadingDialog;
 
 
     @Override
@@ -50,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView,
         nicknameEditText = findViewById(R.id.nickname_editText);
         passwordEditText = findViewById(R.id.password_editText);
         emailEditText = findViewById(R.id.email_editText);
-        progressBar = findViewById(R.id.progressBar);
+        loadingDialog = new LoadingDialog(this);
         registerButton = findViewById(R.id.register_button);
         clearButton = findViewById(R.id.clear_button);
         messageTextView = findViewById(R.id.message_textView);
@@ -111,7 +113,11 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView,
 
     @Override
     public void onSetProgressBarVisibility(int visibility) {
-        progressBar.setVisibility(visibility);
+        if (visibility == View.GONE) {
+            loadingDialog.dismissLoading();
+        } else {
+            loadingDialog.showLoading();
+        }
     }
 
 
@@ -146,7 +152,6 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView,
 
     @Override
     public void onSetMessage(String message, int type) {
-
         FancyToast.makeText(getContext(), message, FancyToast.LENGTH_SHORT, type, false).show();
     }
 }

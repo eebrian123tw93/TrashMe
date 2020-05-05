@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity implements ViewExtension, V
     public void onClick(View v) {
         if (v.getId() == R.id.register_textView) {
             Intent intent = new Intent(this, RegisterActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
     }

@@ -1,45 +1,21 @@
 package com.brianlu.trashme.base;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.os.Handler;
 
-import com.brianlu.trashme.model.User;
-import com.google.gson.Gson;
 
 public class BasePresenter {
     public static final String dateFormat = "yyyy-MM-dd HH:mm:ss";
     private static final String USER_PROFILE = "user_profile";
-    protected static User user =  new User("test", "test", "");
+
     static UserListener userListener;
-    private static final String PROFILE = "profile";
+    protected Handler handler;
+
     protected Context context;
 
-    public BasePresenter() {
+    protected BasePresenter() {
         this.context = BaseApplication.getContext();
-    }
-
-    void saveUser(User user) {
-
-
-        String profileJson = new Gson().toJson(user, User.class);
-
-        context.getSharedPreferences(PROFILE, Context.MODE_PRIVATE).edit()
-                .putString(USER_PROFILE, profileJson).apply();
-    }
-
-    void readUser() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PROFILE, Context.MODE_PRIVATE);
-        String profileJson = sharedPreferences.getString(USER_PROFILE, "");
-        User user = new Gson().fromJson(profileJson, User.class);
-        if (user == null || user.getNickname() == null || user.getPassword() == null || user.getNickname().isEmpty() || user.getPassword().isEmpty()) {
-            BasePresenter.user = null;
-        } else {
-            BasePresenter.user = new User(user.getNickname(), user.getPassword(), user.getEmail());
-        }
-    }
-
-    public boolean isLogin() {
-        return user != null;
+        handler = new Handler();
     }
 
     public interface UserListener {
