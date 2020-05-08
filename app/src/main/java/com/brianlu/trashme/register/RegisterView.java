@@ -8,4 +8,5 @@ interface RegisterView extends BaseView {
 
     void onSetProgressBarVisibility(int visibility);
 
+
 }

@@ -1,5 +1,7 @@
 package com.brianlu.trashme.core;
 
+import android.util.Log;
+
 import com.brianlu.trashme.model.Result;
 import com.google.gson.GsonBuilder;
 
@@ -11,14 +13,15 @@ import retrofit2.Response;
 
 public interface ServiceExtension {
 
-    default Observable<Result> mapToResult(Observable<Response<ResponseBody>> response, boolean isObserveOnIO) {
+    default Observable<Result> mapToResult(Observable<Response<ResponseBody>> responseObservable, boolean isObserveOnIO) {
 
-        return response.subscribeOn(Schedulers.io())
+        return responseObservable.subscribeOn(Schedulers.io())
                 .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
-                .doOnNext(System.out::println)
-                .map(Response::body)
-                .doOnNext(System.out::println)
+                .map(response -> {
+                    Log.i("ServiceExtension", responseObservable.toString());
+                    return response.isSuccessful()? response.body():response.errorBody();
+                })
                 .map(ResponseBody::string)
                 .doOnNext(System.out::println)
                 .map(s -> new GsonBuilder().create().fromJson(s, Result.class))

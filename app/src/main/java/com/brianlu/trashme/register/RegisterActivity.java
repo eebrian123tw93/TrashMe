@@ -1,6 +1,7 @@
 package com.brianlu.trashme.register;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -13,10 +14,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 
 import com.brianlu.trashme.R;
 import com.brianlu.trashme.core.View.LoadingDialog;
 import com.brianlu.trashme.core.View.ViewExtension;
+import com.brianlu.trashme.home.HomeActivity;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import static com.brianlu.trashme.base.BaseApplication.getContext;
@@ -107,8 +110,15 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView,
         registerButton.setEnabled(true);
         clearButton.setEnabled(true);
         if (result) {
-            finish();
+            moveToHomeActivity();
         }
+    }
+
+    void moveToHomeActivity(){
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP );
+        ActivityCompat.finishAffinity(this);
+        startActivity(intent);
     }
 
     @Override

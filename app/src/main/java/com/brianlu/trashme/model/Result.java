@@ -17,7 +17,7 @@ public class Result {
     }
 
     public void checkPayLoadIsNotNuLL() throws Exception {
-        if (payload == null) {
+        if (payload == null || payload.isEmpty()) {
             throw new Exception("payload is empty");
         }
     }

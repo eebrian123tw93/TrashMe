@@ -8,6 +8,7 @@ import com.brianlu.trashme.base.BaseService;
 import com.brianlu.trashme.core.AppEnvironmentVariables;
 import com.brianlu.trashme.core.ServiceExtension;
 import com.brianlu.trashme.core.URLRetrofitBuilder;
+import com.brianlu.trashme.model.Result;
 import com.brianlu.trashme.model.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -33,6 +34,7 @@ public class UserService extends BaseService implements ServiceExtension {
         String baseUrl = AppEnvironmentVariables.BASE_URL;
         Retrofit retrofit = urlRetrofitBuilder.buildRetrofit(baseUrl, true);
         userApi = retrofit.create(UserApi.class);
+        readUser();
     }
 
     // 創建實例
@@ -45,13 +47,14 @@ public class UserService extends BaseService implements ServiceExtension {
         return user != null;
     }
 
-    void saveUser(User user) {
+    public void saveUser(User user) {
 
 
         String profileJson = new Gson().toJson(user, User.class);
 
         context.getSharedPreferences(PROFILE, Context.MODE_PRIVATE).edit()
                 .putString(USER_PROFILE, profileJson).apply();
+        readUser();
     }
 
     void readUser() {
@@ -70,23 +73,15 @@ public class UserService extends BaseService implements ServiceExtension {
         return UserService.SingletonHolder.INSTANCE;
     }
 
-    public Observable<User> register(@NonNull User user, boolean isObserveOnIO) {
-
+    public Observable<Result> register(@NonNull User user, boolean isObserveOnIO) {
         Gson gson = new Gson();
         String json = gson.toJson(user);
-
-        return mapToPayLoad(userApi.register(json), isObserveOnIO)
-                .map(s -> new GsonBuilder().create().fromJson(s, User.class));
-
+        return mapToResult(userApi.register(json), isObserveOnIO);
     }
 
-    public Observable<Response<ResponseBody>> login(@NonNull User user, boolean isObserveOnIO) {
+    public Observable<Result> login(@NonNull User user, boolean isObserveOnIO) {
         String authKey = user.authKey();
-        return userApi.login(authKey)
-                .subscribeOn(Schedulers.io())
-                .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io());
-
+        return mapToResult(userApi.login(authKey), isObserveOnIO);
     }
 
     public Observable<Response<ResponseBody>> deleteUser(@NonNull User user, boolean isObserveOnIO) {

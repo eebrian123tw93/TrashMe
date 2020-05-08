@@ -19,7 +19,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="InnerclassSeparator"
         tools:targetApi="n">
-        <activity android:name=".logo.LogoActivity">
+        <activity android:name=".logo.LogoActivity"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,7 +32,7 @@
         <activity android:name=".home.HomeActivity"/>
         <activity android:name=".MainActivity" />
         <activity android:name=".login.LoginActivity"/>
-        <activity android:name=".register.RegisterActivity"/>
+        <activity android:name=".register.RegisterActivity" android:noHistory="true"/>
 
     </application>
 

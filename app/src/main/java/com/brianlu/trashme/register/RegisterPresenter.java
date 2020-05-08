@@ -34,18 +34,19 @@ class RegisterPresenter extends BasePresenter {
             registerView.onRegisterResult(false);
 
         } else {
-            user.setNickname(nickname);
+            user.setName(nickname);
             user.setPassword(password);
             user.setEmail(email);
             UserService.getInstance().register(user, false)
-                    .subscribe(new Observer<User>() {
+                    .subscribe(new Observer<Result>() {
                         @Override
                         public void onSubscribe(Disposable d) {
 
                         }
 
                         @Override
-                        public void onNext(User result) {
+                        public void onNext(Result result) {
+                            UserService.getInstance().saveUser(user);
                             registerView.onRegisterResult(true);
                             registerView.onSetMessage("Register Success", FancyToast.SUCCESS);
                         }
