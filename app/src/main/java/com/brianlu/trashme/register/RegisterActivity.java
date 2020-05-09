@@ -1,34 +1,41 @@
 package com.brianlu.trashme.register;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 
 import com.brianlu.trashme.R;
+import com.brianlu.trashme.core.View.ViewExtension;
+import com.brianlu.trashme.core.View.dialog.LoadingDialog;
+import com.brianlu.trashme.home.HomeActivity;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import static com.brianlu.trashme.base.BaseApplication.getContext;
 
-public class RegisterActivity extends AppCompatActivity implements RegisterView, View.OnClickListener {
+public class RegisterActivity extends AppCompatActivity implements RegisterView, View.OnClickListener, ViewExtension {
     private RegisterPresenter registerPresenter;
 
     private EditText nicknameEditText;
     private EditText passwordEditText;
     private EditText emailEditText;
-    private ProgressBar progressBar;
 
     private Button registerButton;
     private Button clearButton;
 
     private TextView messageTextView;
+
+    private LoadingDialog loadingDialog;
 
 
     @Override
@@ -47,7 +54,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView,
         nicknameEditText = findViewById(R.id.nickname_editText);
         passwordEditText = findViewById(R.id.password_editText);
         emailEditText = findViewById(R.id.email_editText);
-        progressBar = findViewById(R.id.progressBar);
+        loadingDialog = new LoadingDialog(this);
         registerButton = findViewById(R.id.register_button);
         clearButton = findViewById(R.id.clear_button);
         messageTextView = findViewById(R.id.message_textView);
@@ -58,6 +65,34 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView,
 
         registerPresenter = new RegisterPresenter(this);
         registerPresenter.setProgressBarVisibility(View.GONE);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        int color = Color.rgb(254, 59, 91);
+
+        CardView emailCardView = findViewById(R.id.email_cardView);
+        setRadiusBorder(emailCardView,Color.WHITE,color);
+        int emailRadius = emailCardView.getHeight() / 2;
+        emailCardView.setRadius(emailRadius);
+        CardView passwordCardView = findViewById(R.id.password_cardView);
+        setRadiusBorder(passwordCardView,Color.WHITE,color);
+        int passwordRadius = passwordCardView.getHeight() / 2;
+        passwordCardView.setRadius(passwordRadius);
+
+        CardView nicknameCardView = findViewById(R.id.nickname_cardView);
+        setRadiusBorder(nicknameCardView,Color.WHITE,color);
+        int nicknameRadius = passwordCardView.getHeight() / 2;
+        nicknameCardView.setRadius(nicknameRadius);
+
+
+        setRadiusBorder(registerButton, color, color);
+        setRadiusBorder(clearButton, Color.WHITE, color);
+        registerButton.setTextColor(Color.WHITE);
+        clearButton.setTextColor(color);
+
     }
 
     @Override
@@ -74,13 +109,24 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView,
         registerButton.setEnabled(true);
         clearButton.setEnabled(true);
         if (result) {
-            finish();
+            moveToHomeActivity();
         }
+    }
+
+    void moveToHomeActivity(){
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP );
+        ActivityCompat.finishAffinity(this);
+        startActivity(intent);
     }
 
     @Override
     public void onSetProgressBarVisibility(int visibility) {
-        progressBar.setVisibility(visibility);
+        if (visibility == View.GONE) {
+            loadingDialog.dismissLoading();
+        } else {
+            loadingDialog.showLoading();
+        }
     }
 
 
@@ -115,7 +161,6 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView,
 
     @Override
     public void onSetMessage(String message, int type) {
-
         FancyToast.makeText(getContext(), message, FancyToast.LENGTH_SHORT, type, false).show();
     }
 }

@@ -90,4 +90,10 @@ gradle/wrapper/
 
 app/release/
 
-app/
+app/src/main/.DS_Store
+
+app/.DS_Store
+
+app/src/main/res/.DS_Store
+
+app/src/main/res/drawable/.DS_Store

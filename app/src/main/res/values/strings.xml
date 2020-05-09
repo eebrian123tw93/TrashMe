@@ -18,8 +18,7 @@
     <string name="content">內容</string>
     <string name="complete">完成</string>
     <string name="error">錯誤</string>
-
-
+    <string name="forgot_password">忘記密碼</string>
 
 
 </resources>
