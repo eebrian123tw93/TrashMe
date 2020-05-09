@@ -3,7 +3,11 @@ package com.brianlu.trashme.core;
 import android.util.Log;
 
 import com.brianlu.trashme.model.Result;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -20,6 +24,9 @@ public interface ServiceExtension {
                 .unsubscribeOn(Schedulers.io())
                 .map(response -> {
                     Log.i("ServiceExtension", responseObservable.toString());
+                    if (response.code() == 401) {
+                        throw new Exception("授權失敗");
+                    }
                     return response.isSuccessful()? response.body():response.errorBody();
                 })
                 .map(ResponseBody::string)
@@ -29,11 +36,35 @@ public interface ServiceExtension {
                 .doOnNext(Result::checkAPIResultOk);
     }
 
-    default Observable<String> mapToPayLoad(Observable<Response<ResponseBody>> response, boolean isObserveOnIO) {
+    default Observable<Map<String, Object>> mapToPayLoad(Observable<Response<ResponseBody>> response, boolean isObserveOnIO) {
         return mapToResult(response, isObserveOnIO)
                 .doOnNext(Result::checkPayLoadIsNotNuLL)
-                .map(Result::getPayload);
+                .map(Result::getPayload)
+                .doOnNext(System.out::println);
 
+    }
+
+    default <T> Observable<T> mapPayLoadToModel(Observable<Response<ResponseBody>> response, boolean isObserveOnIO, Class<T> cls) {
+        return mapToPayLoad(response, isObserveOnIO)
+                .map(payload -> {
+                    Gson gson = new Gson();
+                    JsonElement jsonElement = gson.toJsonTree(payload);
+                    return gson.fromJson(jsonElement, cls);
+                });
+    }
+
+    default Observable<String> mapToString(Observable<Response<ResponseBody>> responseObservable, boolean isObserveOnIO) {
+        return responseObservable.subscribeOn(Schedulers.io())
+                .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .map(response -> {
+                    Log.i("ServiceExtension", responseObservable.toString());
+                    if (response.code() == 401) {
+                        throw new Exception("授權失敗");
+                    }
+                    return response.isSuccessful() ? response.body() : response.errorBody();
+                })
+                .map(ResponseBody::string);
     }
 
 }

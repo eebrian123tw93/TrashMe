@@ -1,0 +1,48 @@
+package com.brianlu.trashme.api.consumer;
+
+import android.annotation.SuppressLint;
+
+import com.brianlu.trashme.api.user.UserService;
+import com.brianlu.trashme.base.BaseService;
+import com.brianlu.trashme.core.AppEnvironmentVariables;
+import com.brianlu.trashme.core.ServiceExtension;
+import com.brianlu.trashme.core.URLRetrofitBuilder;
+import com.brianlu.trashme.model.MainPageModel;
+import com.brianlu.trashme.model.User;
+
+import io.reactivex.Observable;
+import retrofit2.Retrofit;
+
+
+public class ConsumerService extends BaseService implements ServiceExtension {
+    private final ConsumerApi userApi;
+
+
+    private ConsumerService() {
+        super();
+        URLRetrofitBuilder urlRetrofitBuilder = new URLRetrofitBuilder();
+        String baseUrl = AppEnvironmentVariables.BASE_URL;
+        Retrofit retrofit = urlRetrofitBuilder.buildRetrofit(baseUrl, true);
+        userApi = retrofit.create(ConsumerApi.class);
+
+    }
+
+    // 獲取實例
+    public static ConsumerService getInstance() {
+        return ConsumerService.SingletonHolder.INSTANCE;
+    }
+
+    public Observable<MainPageModel> mainPage(boolean isObserveOnIO) {
+        User user = UserService.getInstance().user;
+        String authKey = user.authKey();
+        return mapPayLoadToModel(userApi.mainPage(authKey), isObserveOnIO, MainPageModel.class);
+    }
+
+    // 創建實例
+    private static class SingletonHolder {
+        @SuppressLint("StaticFieldLeak")
+        private static final ConsumerService INSTANCE = new ConsumerService();
+    }
+
+}
+

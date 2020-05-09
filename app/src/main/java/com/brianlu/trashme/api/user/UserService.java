@@ -1,4 +1,4 @@
-package com.brianlu.trashme.api;
+package com.brianlu.trashme.api.user;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,7 +11,6 @@ import com.brianlu.trashme.core.URLRetrofitBuilder;
 import com.brianlu.trashme.model.Result;
 import com.brianlu.trashme.model.User;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -24,7 +23,7 @@ import retrofit2.Retrofit;
 
 public class UserService extends BaseService implements ServiceExtension {
     private final UserApi userApi;
-    private User user;
+    public User user;
     private static String PROFILE = "profile";
     private static final String USER_PROFILE = "user_profile";
 
@@ -79,9 +78,12 @@ public class UserService extends BaseService implements ServiceExtension {
         return mapToResult(userApi.register(json), isObserveOnIO);
     }
 
-    public Observable<Result> login(@NonNull User user, boolean isObserveOnIO) {
+    public Observable<Response<ResponseBody>> login(@NonNull User user, boolean isObserveOnIO) {
         String authKey = user.authKey();
-        return mapToResult(userApi.login(authKey), isObserveOnIO);
+        return userApi.login(authKey).subscribeOn(Schedulers.io())
+                .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io());
+
     }
 
     public Observable<Response<ResponseBody>> deleteUser(@NonNull User user, boolean isObserveOnIO) {

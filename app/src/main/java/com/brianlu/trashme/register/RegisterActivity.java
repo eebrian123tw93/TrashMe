@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,8 +16,8 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
 import com.brianlu.trashme.R;
-import com.brianlu.trashme.core.View.LoadingDialog;
 import com.brianlu.trashme.core.View.ViewExtension;
+import com.brianlu.trashme.core.View.dialog.LoadingDialog;
 import com.brianlu.trashme.home.HomeActivity;
 import com.shashank.sony.fancytoastlib.FancyToast;
 

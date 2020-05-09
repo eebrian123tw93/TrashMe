@@ -2,7 +2,7 @@ package com.brianlu.trashme.logo;
 
 import android.util.Log;
 
-import com.brianlu.trashme.api.UserService;
+import com.brianlu.trashme.api.user.UserService;
 import com.brianlu.trashme.base.BasePresenter;
 
 class LogoPresenter extends BasePresenter {
@@ -11,7 +11,7 @@ class LogoPresenter extends BasePresenter {
     LogoPresenter(LogoView view){
         super();
         this.view = view;
-        handler.postDelayed(this::checkIfLogin, 1500);
+        handler.postDelayed(this::checkIfLogin, 1000);
     }
 
     private void checkIfLogin(){

@@ -1,6 +1,6 @@
 package com.brianlu.trashme.register;
 
-import com.brianlu.trashme.api.UserService;
+import com.brianlu.trashme.api.user.UserService;
 import com.brianlu.trashme.base.BasePresenter;
 import com.brianlu.trashme.model.Result;
 import com.brianlu.trashme.model.User;

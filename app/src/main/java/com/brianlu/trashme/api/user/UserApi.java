@@ -1,4 +1,4 @@
-package com.brianlu.trashme.api;
+package com.brianlu.trashme.api.user;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -18,7 +18,7 @@ interface UserApi {
     @POST("/TrashMe/User/Register")
     Observable<Response<ResponseBody>> register(@Body String s);
 
-    @GET("/TrashMe/checkUserExist/")
+    @GET("/TrashMe/User/Login")
     Observable<Response<ResponseBody>> login(@Header("Authorization") String authKey);
 
     @DELETE("/TrashMe/deleteUser/")

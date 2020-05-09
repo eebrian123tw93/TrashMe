@@ -1,4 +1,4 @@
-package com.brianlu.trashme.core.View;
+package com.brianlu.trashme.core.View.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -12,6 +12,7 @@ import android.view.Window;
 import androidx.appcompat.app.AlertDialog;
 
 import com.brianlu.trashme.R;
+import com.brianlu.trashme.core.View.ViewExtension;
 
 public class LoadingDialog implements ViewExtension {
     private AlertDialog dialog;
@@ -20,7 +21,7 @@ public class LoadingDialog implements ViewExtension {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         LayoutInflater inflater = activity.getLayoutInflater();
         @SuppressLint("InflateParams")
-        View view = inflater.inflate(R.layout.loading, null);
+        View view = inflater.inflate(R.layout.dialog_loading, null);
         View background = view.findViewById(R.id.contraint_layout);
         GradientDrawable drawable =  new GradientDrawable();
         drawable.setCornerRadius(30);

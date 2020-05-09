@@ -2,9 +2,9 @@ package com.brianlu.trashme.model;
 
 
 import android.util.Base64;
+import android.util.Log;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +23,9 @@ public class User {
 
     public String authKey() {
         String original = email + ":" + password;
-        return "Basic " + Base64.encodeToString(original.getBytes(), Base64.NO_WRAP);
+        Log.i("authKey", original);
+        String authKey = "Basic " + Base64.encodeToString(original.getBytes(), Base64.NO_WRAP);
+        Log.i("authKey", authKey);
+        return authKey;
     }
 }

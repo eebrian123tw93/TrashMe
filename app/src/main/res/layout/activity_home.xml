@@ -156,7 +156,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/textView16"
+                            android:id="@+id/recycleTrashPrice_textView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="24NT/kg"
@@ -194,7 +194,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/textView16"
+                            android:id="@+id/normalTrashPrice_textView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="20NT/kg"
@@ -241,7 +241,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/fjadshladsf"
+                            android:id="@+id/mixedTrashPrice_textView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="30NT/kg"
@@ -335,7 +335,7 @@
                                 app:srcCompat="@drawable/location" />
 
                             <TextView
-                                android:id="@+id/textView22"
+                                android:id="@+id/locationName_textView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
@@ -393,7 +393,7 @@
                         app:srcCompat="@drawable/transaction" />
 
                     <TextView
-                        android:id="@+id/textView23"
+                        android:id="@+id/pickupOrderTimes_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
