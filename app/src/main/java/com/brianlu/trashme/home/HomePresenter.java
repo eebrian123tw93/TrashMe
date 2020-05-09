@@ -12,7 +12,7 @@ import com.shashank.sony.fancytoastlib.FancyToast;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public class HomePresenter extends BasePresenter {
+class HomePresenter extends BasePresenter {
     private HomeView view;
 
     HomePresenter(HomeView view) {

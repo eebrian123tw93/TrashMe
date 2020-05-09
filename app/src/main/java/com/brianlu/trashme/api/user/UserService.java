@@ -56,7 +56,7 @@ public class UserService extends BaseService implements ServiceExtension {
         readUser();
     }
 
-    void readUser() {
+    private void readUser() {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PROFILE, Context.MODE_PRIVATE);
         String profileJson = sharedPreferences.getString(USER_PROFILE, "");
         User user = new Gson().fromJson(profileJson, User.class);

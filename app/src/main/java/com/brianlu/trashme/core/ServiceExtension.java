@@ -53,18 +53,4 @@ public interface ServiceExtension {
                 });
     }
 
-    default Observable<String> mapToString(Observable<Response<ResponseBody>> responseObservable, boolean isObserveOnIO) {
-        return responseObservable.subscribeOn(Schedulers.io())
-                .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .map(response -> {
-                    Log.i("ServiceExtension", responseObservable.toString());
-                    if (response.code() == 401) {
-                        throw new Exception("授權失敗");
-                    }
-                    return response.isSuccessful() ? response.body() : response.errorBody();
-                })
-                .map(ResponseBody::string);
-    }
-
 }
