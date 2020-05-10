@@ -8,14 +8,17 @@ import com.brianlu.trashme.core.AppEnvironmentVariables;
 import com.brianlu.trashme.core.ServiceExtension;
 import com.brianlu.trashme.core.URLRetrofitBuilder;
 import com.brianlu.trashme.model.MainPageModel;
+import com.brianlu.trashme.model.OrderModel;
+import com.brianlu.trashme.model.Result;
 import com.brianlu.trashme.model.User;
+import com.google.gson.Gson;
 
 import io.reactivex.Observable;
 import retrofit2.Retrofit;
 
 
 public class ConsumerService extends BaseService implements ServiceExtension {
-    private final ConsumerApi userApi;
+    private final ConsumerApi api;
 
 
     private ConsumerService() {
@@ -23,7 +26,7 @@ public class ConsumerService extends BaseService implements ServiceExtension {
         URLRetrofitBuilder urlRetrofitBuilder = new URLRetrofitBuilder();
         String baseUrl = AppEnvironmentVariables.BASE_URL;
         Retrofit retrofit = urlRetrofitBuilder.buildRetrofit(baseUrl, true);
-        userApi = retrofit.create(ConsumerApi.class);
+        api = retrofit.create(ConsumerApi.class);
 
     }
 
@@ -35,8 +38,16 @@ public class ConsumerService extends BaseService implements ServiceExtension {
     public Observable<MainPageModel> mainPage(boolean isObserveOnIO) {
         User user = UserService.getInstance().user;
         String authKey = user.authKey();
-        return mapPayLoadToModel(userApi.mainPage(authKey), isObserveOnIO, MainPageModel.class);
+        return mapPayLoadToModel(api.mainPage(authKey), isObserveOnIO, MainPageModel.class);
     }
+
+    public Observable<Result> createOrder(OrderModel model, boolean isObserveOnIO) {
+        User user = UserService.getInstance().user;
+        String authKey = user.authKey();
+        String json = new Gson().toJson(model);
+        return mapToResult(api.orderCreate(authKey, json), isObserveOnIO);
+    }
+
 
     // 創建實例
     private static class SingletonHolder {

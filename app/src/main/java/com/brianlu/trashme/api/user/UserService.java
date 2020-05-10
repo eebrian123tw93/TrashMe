@@ -8,6 +8,7 @@ import com.brianlu.trashme.base.BaseService;
 import com.brianlu.trashme.core.AppEnvironmentVariables;
 import com.brianlu.trashme.core.ServiceExtension;
 import com.brianlu.trashme.core.URLRetrofitBuilder;
+import com.brianlu.trashme.model.LocationModel;
 import com.brianlu.trashme.model.Result;
 import com.brianlu.trashme.model.User;
 import com.google.gson.Gson;
@@ -22,7 +23,7 @@ import retrofit2.Retrofit;
 
 
 public class UserService extends BaseService implements ServiceExtension {
-    private final UserApi userApi;
+    private final UserApi api;
     public User user;
     private static String PROFILE = "profile";
     private static final String USER_PROFILE = "user_profile";
@@ -32,7 +33,7 @@ public class UserService extends BaseService implements ServiceExtension {
         URLRetrofitBuilder urlRetrofitBuilder = new URLRetrofitBuilder();
         String baseUrl = AppEnvironmentVariables.BASE_URL;
         Retrofit retrofit = urlRetrofitBuilder.buildRetrofit(baseUrl, true);
-        userApi = retrofit.create(UserApi.class);
+        api = retrofit.create(UserApi.class);
         readUser();
     }
 
@@ -75,20 +76,27 @@ public class UserService extends BaseService implements ServiceExtension {
     public Observable<Result> register(@NonNull User user, boolean isObserveOnIO) {
         Gson gson = new Gson();
         String json = gson.toJson(user);
-        return mapToResult(userApi.register(json), isObserveOnIO);
+        return mapToResult(api.register(json), isObserveOnIO);
     }
 
     public Observable<Response<ResponseBody>> login(@NonNull User user, boolean isObserveOnIO) {
         String authKey = user.authKey();
-        return userApi.login(authKey).subscribeOn(Schedulers.io())
+        return api.login(authKey).subscribeOn(Schedulers.io())
                 .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
 
     }
 
+    public Observable<Result> updateLocation(@NonNull LocationModel model, boolean isObserveOnIO) {
+        String authKey = user.authKey();
+        String json = new Gson().toJson(model);
+        return mapToResult(api.updateLocation(authKey, json), isObserveOnIO);
+    }
+
+
     public Observable<Response<ResponseBody>> deleteUser(@NonNull User user, boolean isObserveOnIO) {
         String authKey = user.authKey();
-        return userApi.deleteUser(authKey)
+        return api.deleteUser(authKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
@@ -96,7 +104,7 @@ public class UserService extends BaseService implements ServiceExtension {
     }
 
     public Observable<Response<ResponseBody>> forgotPassword(@NonNull String email, boolean isObserveOnIO) {
-        return userApi.forgotPassword(email)
+        return api.forgotPassword(email)
                 .subscribeOn(Schedulers.io())
                 .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io());
