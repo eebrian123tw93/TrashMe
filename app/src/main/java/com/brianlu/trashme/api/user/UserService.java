@@ -27,7 +27,8 @@ public class UserService extends BaseService implements ServiceExtension {
   private static String PROFILE = "profile";
   private final UserApi api;
   public User user;
-    private static final String USER_PROFILE = "user_profile";
+  private static final String USER_NOTE = "user_note";
+  public BehaviorRelay<String> noteRelay = BehaviorRelay.create();
 
   private UserService() {
     super();
@@ -90,24 +91,17 @@ public class UserService extends BaseService implements ServiceExtension {
         .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
         .unsubscribeOn(Schedulers.io());
   }
-    public void saveNote(String note){
-        context.getSharedPreferences(PROFILE, Context.MODE_PRIVATE).edit()
-            .putString(USER_NOTE, note).apply();
-        readNote();
-    }
+  public void saveNote(String note){
+      context.getSharedPreferences(PROFILE, Context.MODE_PRIVATE).edit()
+          .putString(USER_NOTE, note).apply();
+      readNote();
+  }
 
-    private void readNote(){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PROFILE, Context.MODE_PRIVATE);
-        String note = sharedPreferences.getString(USER_NOTE, "");
-        noteRelay.accept(note);
-    }
-
-
-
-    // 獲取實例
-    public static UserService getInstance() {
-        return UserService.SingletonHolder.INSTANCE;
-    }
+  private void readNote(){
+      SharedPreferences sharedPreferences = context.getSharedPreferences(PROFILE, Context.MODE_PRIVATE);
+      String note = sharedPreferences.getString(USER_NOTE, "");
+      noteRelay.accept(note);
+  }
 
   public Observable<Result> updateLocation(@NonNull LocationModel model, boolean isObserveOnIO) {
     String authKey = user.authKey();
