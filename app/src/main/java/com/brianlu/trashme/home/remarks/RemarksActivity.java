@@ -17,14 +17,18 @@ public class RemarksActivity extends AppCompatActivity implements RemarksView, V
 
   private Button saveButton;
   private EditText noteEditText;
+  private Button backButton;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_remarks);
 
+    noteEditText = findViewById(R.id.editText);
     saveButton = findViewById(R.id.save_button);
+    backButton = findViewById(R.id.back_button);
     saveButton.setOnClickListener(this);
+    backButton.setOnClickListener(this);
 
     presenter = new RemarksPresenter(this);
   }
@@ -45,6 +49,9 @@ public class RemarksActivity extends AppCompatActivity implements RemarksView, V
         String note = noteEditText.getText().toString();
         presenter.saveNote(note);
         break;
+      case R.id.back_button:
+        finish();
+        break;
     }
 
   }
@@ -52,5 +59,10 @@ public class RemarksActivity extends AppCompatActivity implements RemarksView, V
   @Override
   public void onSetNote(String note) {
     noteEditText.setText(note);
+  }
+
+  @Override
+  public void onSaveNoteSuccess() {
+    finish();
   }
 }

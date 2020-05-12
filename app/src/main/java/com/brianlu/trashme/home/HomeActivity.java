@@ -21,6 +21,7 @@ public class HomeActivity extends AppCompatActivity implements ViewExtension, Ho
 
     ImageView userPictureImageView;
     TextView recycleTrashPriceTextView, normalTrashPriceTextView, mixedTrashPriceTextView, locationNameTextView, pickupOrderTimesTextView;
+    TextView noteTextView;
     CardView cardView;
     HomePresenter presenter;
 
@@ -29,18 +30,17 @@ public class HomeActivity extends AppCompatActivity implements ViewExtension, Ho
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         userPictureImageView = findViewById(R.id.userpicture_imageView);
-        presenter = new HomePresenter(this);
-
         recycleTrashPriceTextView = findViewById(R.id.recycleTrashPrice_textView);
         normalTrashPriceTextView = findViewById(R.id.normalTrashPrice_textView);
         mixedTrashPriceTextView = findViewById(R.id.mixedTrashPrice_textView);
         locationNameTextView = findViewById(R.id.locationName_textView);
         pickupOrderTimesTextView = findViewById(R.id.pickupOrderTimes_textView);
         cardView = findViewById(R.id.note_cardView);
-
+        noteTextView = findViewById(R.id.note_textView);
 
         cardView.setOnClickListener(this);
         userPictureImageView.setOnClickListener(this);
+        presenter = new HomePresenter(this);
     }
 
     @Override
@@ -83,4 +83,11 @@ public class HomeActivity extends AppCompatActivity implements ViewExtension, Ho
         locationNameTextView.setText(mode.getLocationName());
         pickupOrderTimesTextView.setText(mode.getPickupOrderTimes() + "");
     }
+
+    @Override
+    public void onSetNote(String note) {
+        noteTextView.setText(note);
+    }
+
+
 }

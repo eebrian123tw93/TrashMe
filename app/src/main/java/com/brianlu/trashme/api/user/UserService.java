@@ -12,6 +12,7 @@ import com.brianlu.trashme.model.LocationModel;
 import com.brianlu.trashme.model.Result;
 import com.brianlu.trashme.model.User;
 import com.google.gson.Gson;
+import com.jakewharton.rxrelay2.BehaviorRelay;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -25,8 +26,10 @@ import retrofit2.Retrofit;
 public class UserService extends BaseService implements ServiceExtension {
     private final UserApi api;
     public User user;
+    public BehaviorRelay<String> noteRelay = BehaviorRelay.create();
     private static String PROFILE = "profile";
     private static final String USER_PROFILE = "user_profile";
+    private static final String USER_NOTE = "user_note";
 
     private UserService() {
         super();
@@ -35,6 +38,7 @@ public class UserService extends BaseService implements ServiceExtension {
         Retrofit retrofit = urlRetrofitBuilder.buildRetrofit(baseUrl, true);
         api = retrofit.create(UserApi.class);
         readUser();
+        readNote();
     }
 
     // 創建實例
@@ -67,6 +71,20 @@ public class UserService extends BaseService implements ServiceExtension {
             this.user = new User(user.getEmail(), user.getPassword(), user.getEmail());
         }
     }
+
+    public void saveNote(String note){
+        context.getSharedPreferences(PROFILE, Context.MODE_PRIVATE).edit()
+            .putString(USER_NOTE, note).apply();
+        readNote();
+    }
+
+    private void readNote(){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PROFILE, Context.MODE_PRIVATE);
+        String note = sharedPreferences.getString(USER_NOTE, "");
+        noteRelay.accept(note);
+    }
+
+
 
     // 獲取實例
     public static UserService getInstance() {

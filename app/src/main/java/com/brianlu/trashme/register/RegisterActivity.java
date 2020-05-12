@@ -33,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView,
     private Button registerButton;
     private Button clearButton;
 
+
     private TextView messageTextView;
 
     private LoadingDialog loadingDialog;
@@ -59,8 +60,10 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView,
         clearButton = findViewById(R.id.clear_button);
         messageTextView = findViewById(R.id.message_textView);
 
+
         registerButton.setOnClickListener(this);
         clearButton.setOnClickListener(this);
+
 
 
         registerPresenter = new RegisterPresenter(this);

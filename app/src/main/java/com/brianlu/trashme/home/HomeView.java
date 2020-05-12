@@ -7,4 +7,6 @@ public interface HomeView extends BaseView {
     void moveToLogin();
 
     void onSetMainPageData(MainPageModel mode);
+
+    void onSetNote(String note);
 }
