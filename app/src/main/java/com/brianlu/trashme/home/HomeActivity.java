@@ -8,10 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.brianlu.trashme.R;
 import com.brianlu.trashme.core.View.ViewExtension;
 import com.brianlu.trashme.core.View.dialog.ConfirmDialog;
+import com.brianlu.trashme.home.remarks.RemarksActivity;
 import com.brianlu.trashme.login.LoginActivity;
 import com.brianlu.trashme.model.MainPageModel;
 
@@ -19,7 +21,7 @@ public class HomeActivity extends AppCompatActivity implements ViewExtension, Ho
 
     ImageView userPictureImageView;
     TextView recycleTrashPriceTextView, normalTrashPriceTextView, mixedTrashPriceTextView, locationNameTextView, pickupOrderTimesTextView;
-
+    CardView cardView;
     HomePresenter presenter;
 
     @Override
@@ -34,8 +36,10 @@ public class HomeActivity extends AppCompatActivity implements ViewExtension, Ho
         mixedTrashPriceTextView = findViewById(R.id.mixedTrashPrice_textView);
         locationNameTextView = findViewById(R.id.locationName_textView);
         pickupOrderTimesTextView = findViewById(R.id.pickupOrderTimes_textView);
+        cardView = findViewById(R.id.note_cardView);
 
 
+        cardView.setOnClickListener(this);
         userPictureImageView.setOnClickListener(this);
     }
 
@@ -53,6 +57,11 @@ public class HomeActivity extends AppCompatActivity implements ViewExtension, Ho
                 confirmDialog.setCustomMessage("確定登出");
                 confirmDialog.setConfirmOnClickListener(view -> presenter.logout());
                 confirmDialog.show();
+                break;
+            case R.id.note_cardView:
+                Intent intentToRemarks = new Intent(this, RemarksActivity.class);
+                intentToRemarks.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intentToRemarks);
                 break;
         }
     }

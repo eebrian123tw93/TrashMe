@@ -9,7 +9,6 @@ import com.shashank.sony.fancytoastlib.FancyToast;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import okhttp3.ResponseBody;
-import retrofit2.Response;
 
 class ForgotPasswordPresenter extends BasePresenter {
     private ForgotPasswordView view;
@@ -25,29 +24,23 @@ class ForgotPasswordPresenter extends BasePresenter {
             view.onForgotPassword(false);
             view.onSetMessage("Email cant not be empty", FancyToast.ERROR);
         } else {
-            UserService.getInstance().forgotPassword(email, false).subscribe(new Observer<Response<ResponseBody>>() {
+          UserService.getInstance().forgotPassword(email, false).subscribe(new Observer<ResponseBody>() {
                 @Override
                 public void onSubscribe(Disposable d) {
 
                 }
 
                 @Override
-                public void onNext(Response<ResponseBody> response) {
-                    if (response.isSuccessful()) {
-                        view.onForgotPassword(true);
-                        view.onSetMessage("請至" + email + "獲取密碼", FancyToast.SUCCESS);
-                    } else {
-                        view.onForgotPassword(false);
-                        view.onSetMessage("查無此email", FancyToast.ERROR);
-
-                    }
-
+                public void onNext(ResponseBody responseBody) {
+                  view.onForgotPassword(true);
+                  view.onSetMessage("請至" + email + "獲取密碼", FancyToast.SUCCESS);
                 }
 
-                @Override
-                public void onError(Throwable e) {
+            @Override
+            public void onError(Throwable e) {
+              view.onForgotPassword(false);
+              view.onSetMessage("查無此email", FancyToast.ERROR);
                     view.onForgotPassword(false);
-
                     view.onSetMessage(e.getMessage(), FancyToast.ERROR);
                 }
 

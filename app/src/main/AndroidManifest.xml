@@ -19,22 +19,24 @@
         android:theme="@style/AppTheme"
         tools:ignore="InnerclassSeparator"
         tools:targetApi="n">
-        <activity android:name=".logo.LogoActivity"
+        <activity android:name=".home.remarks.RemarksActivity"></activity>
+        <activity
+            android:name=".logo.LogoActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity android:name=".home.orderCompleted.OrderCompletedActivity"/>
-        <activity android:name=".home.HomeActivity"/>
+        <activity android:name=".home.orderCompleted.OrderCompletedActivity" />
+        <activity android:name=".home.HomeActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".login.LoginActivity"/>
-        <activity android:name=".forgotPassword.ForgotPasswordActivity"/>
-        <activity android:name=".register.RegisterActivity" android:noHistory="true"/>
-
+        <activity android:name=".login.LoginActivity" />
+        <activity android:name=".forgotPassword.ForgotPasswordActivity" />
+        <activity
+            android:name=".register.RegisterActivity"
+            android:noHistory="true" />
     </application>
 
 </manifest>

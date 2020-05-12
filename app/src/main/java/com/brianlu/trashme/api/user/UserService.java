@@ -93,11 +93,8 @@ public class UserService extends BaseService implements ServiceExtension {
         return mapToResult(api.updateLocation(authKey, json), isObserveOnIO);
     }
 
-    public Observable<Response<ResponseBody>> forgotPassword(@NonNull String email, boolean isObserveOnIO) {
-        return api.forgotPassword(email)
-                .subscribeOn(Schedulers.io())
-                .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io());
+  public Observable<ResponseBody> forgotPassword(@NonNull String email, boolean isObserveOnIO) {
+    return mapToResponseBody(api.forgotPassword(email), isObserveOnIO);
     }
 
 

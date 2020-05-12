@@ -16,10 +16,8 @@ import com.google.gson.Gson;
 import io.reactivex.Observable;
 import retrofit2.Retrofit;
 
-
 public class ConsumerService extends BaseService implements ServiceExtension {
     private final ConsumerApi api;
-
 
     private ConsumerService() {
         super();
@@ -27,7 +25,6 @@ public class ConsumerService extends BaseService implements ServiceExtension {
         String baseUrl = AppEnvironmentVariables.BASE_URL;
         Retrofit retrofit = urlRetrofitBuilder.buildRetrofit(baseUrl, true);
         api = retrofit.create(ConsumerApi.class);
-
     }
 
     // 獲取實例
@@ -48,12 +45,9 @@ public class ConsumerService extends BaseService implements ServiceExtension {
         return mapToResult(api.orderCreate(authKey, json), isObserveOnIO);
     }
 
-
     // 創建實例
     private static class SingletonHolder {
         @SuppressLint("StaticFieldLeak")
         private static final ConsumerService INSTANCE = new ConsumerService();
     }
-
 }
-

@@ -17,8 +17,7 @@ import retrofit2.Response;
 
 public interface ServiceExtension {
 
-    default Observable<Result> mapToResult(Observable<Response<ResponseBody>> responseObservable, boolean isObserveOnIO) {
-
+  default Observable<ResponseBody> mapToResponseBody(Observable<Response<ResponseBody>> responseObservable, boolean isObserveOnIO) {
         return responseObservable.subscribeOn(Schedulers.io())
                 .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
@@ -28,7 +27,12 @@ public interface ServiceExtension {
                         throw new Exception("授權失敗");
                     }
                     return response.isSuccessful()? response.body():response.errorBody();
-                })
+                });
+  }
+
+  default Observable<Result> mapToResult(Observable<Response<ResponseBody>> responseObservable, boolean isObserveOnIO) {
+
+    return mapToResponseBody(responseObservable, isObserveOnIO)
                 .map(ResponseBody::string)
                 .doOnNext(System.out::println)
                 .map(s -> new GsonBuilder().create().fromJson(s, Result.class))
