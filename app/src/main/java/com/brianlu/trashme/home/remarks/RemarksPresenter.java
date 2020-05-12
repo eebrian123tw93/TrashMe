@@ -8,11 +8,7 @@ public class RemarksPresenter extends BasePresenter {
 
   RemarksPresenter(RemarksView view) {
     this.view = view;
-
-
   }
 
-  void saveNote(String note) {
-
-  }
+  void saveNote(String note) {}
 }

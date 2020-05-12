@@ -13,41 +13,40 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 class HomePresenter extends BasePresenter {
-    private HomeView view;
+  private HomeView view;
 
-    HomePresenter(HomeView view) {
-        this.view = view;
-        getHomePageData();
-    }
+  HomePresenter(HomeView view) {
+    this.view = view;
+    getHomePageData();
+  }
 
-    private void getHomePageData() {
-        ConsumerService.getInstance().mainPage(false).subscribe(new Observer<MainPageModel>() {
-            @Override
-            public void onSubscribe(Disposable d) {
+  private void getHomePageData() {
+    ConsumerService.getInstance()
+        .mainPage(false)
+        .subscribe(
+            new Observer<MainPageModel>() {
+              @Override
+              public void onSubscribe(Disposable d) {}
 
-            }
-
-            @Override
-            public void onNext(MainPageModel model) {
+              @Override
+              public void onNext(MainPageModel model) {
                 Log.i("HomePresenter", model.toString());
                 view.onSetMainPageData(model);
-            }
+              }
 
-            @Override
-            public void onError(Throwable e) {
+              @Override
+              public void onError(Throwable e) {
                 view.onSetMessage(e.getMessage(), FancyToast.ERROR);
                 e.printStackTrace();
-            }
+              }
 
-            @Override
-            public void onComplete() {
+              @Override
+              public void onComplete() {}
+            });
+  }
 
-            }
-        });
-    }
-
-    void logout() {
-        UserService.getInstance().saveUser(new User());
-        view.moveToLogin();
-    }
+  void logout() {
+    UserService.getInstance().saveUser(new User());
+    view.moveToLogin();
+  }
 }
