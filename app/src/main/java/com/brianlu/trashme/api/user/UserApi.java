@@ -24,10 +24,7 @@ interface UserApi {
     @GET("/TrashMe/User/Update/Location")
     Observable<Response<ResponseBody>> updateLocation(@Header("Authorization") String authKey, @Body String body);
 
-    @DELETE("/TrashMe/deleteUser/")
-    Observable<Response<ResponseBody>> deleteUser(@Header("Authorization") String authKey);
-
-    @GET("/TrashMe/public/forgotPassword/")
+    @GET("/TrashMe/User/Forgot/Password")
     Observable<Response<ResponseBody>> forgotPassword(@Query("email") String email);
 
 }

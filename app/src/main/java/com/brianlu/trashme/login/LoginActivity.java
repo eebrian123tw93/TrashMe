@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -14,6 +15,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.brianlu.trashme.R;
 import com.brianlu.trashme.core.View.ViewExtension;
+import com.brianlu.trashme.forgotPassword.ForgotPasswordActivity;
 import com.brianlu.trashme.home.HomeActivity;
 import com.brianlu.trashme.register.RegisterActivity;
 
@@ -23,6 +25,7 @@ public class LoginActivity extends AppCompatActivity implements ViewExtension, V
     private EditText emailEditText;
     private EditText passwordEditText;
     private Button loginButton;
+    private TextView forgotPasswordTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +38,10 @@ public class LoginActivity extends AppCompatActivity implements ViewExtension, V
 
         emailEditText = findViewById(R.id.email_editText);
         passwordEditText = findViewById(R.id.password_editText);
+        forgotPasswordTextView = findViewById(R.id.forgotPassword_textView);
         loginButton = findViewById(R.id.login_button);
         loginButton.setOnClickListener(this);
+        forgotPasswordTextView.setOnClickListener(this);
 
         presenter = new LoginPresenter(this);
     }
@@ -75,6 +80,11 @@ public class LoginActivity extends AppCompatActivity implements ViewExtension, V
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
                 presenter.doLogin(email, password);
+                break;
+            case R.id.forgotPassword_textView:
+                Intent intentToForgotPassword = new Intent(this, ForgotPasswordActivity.class);
+                intentToForgotPassword.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intentToForgotPassword);
                 break;
         }
     }
