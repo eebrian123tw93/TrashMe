@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.brianlu.trashme.R;
 import com.brianlu.trashme.core.View.ViewExtension;
@@ -16,6 +17,7 @@ import com.brianlu.trashme.core.View.dialog.ConfirmDialog;
 import com.brianlu.trashme.home.remarks.RemarksActivity;
 import com.brianlu.trashme.login.LoginActivity;
 import com.brianlu.trashme.model.MainPageModel;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 public class HomeActivity extends AppCompatActivity
     implements ViewExtension, HomeView, View.OnClickListener {
@@ -45,6 +47,13 @@ public class HomeActivity extends AppCompatActivity
 
     cardView.setOnClickListener(this);
     userPictureImageView.setOnClickListener(this);
+
+    ConstraintLayout recycleTrashConstraintLayout = findViewById(R.id.RecycleTrashContraintLayout);
+    ConstraintLayout normalTrashConstraintLayout = findViewById(R.id.NormalTrashContraintLayout);
+    ConstraintLayout mixedTrashConstraintLayout = findViewById(R.id.MixedTrashContraintLayout);
+    recycleTrashConstraintLayout.setOnClickListener(this);
+    normalTrashConstraintLayout.setOnClickListener(this);
+    mixedTrashConstraintLayout.setOnClickListener(this);
   }
 
   @Override
@@ -66,6 +75,9 @@ public class HomeActivity extends AppCompatActivity
         Intent intentToRemarks = new Intent(this, RemarksActivity.class);
         intentToRemarks.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intentToRemarks);
+        break;
+      case R.id.RecycleTrashContraintLayout:
+        onSetMessage("r", FancyToast.INFO);
         break;
     }
   }
