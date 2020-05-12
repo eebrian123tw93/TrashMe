@@ -17,37 +17,37 @@ import io.reactivex.Observable;
 import retrofit2.Retrofit;
 
 public class ConsumerService extends BaseService implements ServiceExtension {
-    private final ConsumerApi api;
+  private final ConsumerApi api;
 
-    private ConsumerService() {
-        super();
-        URLRetrofitBuilder urlRetrofitBuilder = new URLRetrofitBuilder();
-        String baseUrl = AppEnvironmentVariables.BASE_URL;
-        Retrofit retrofit = urlRetrofitBuilder.buildRetrofit(baseUrl, true);
-        api = retrofit.create(ConsumerApi.class);
-    }
+  private ConsumerService() {
+    super();
+    URLRetrofitBuilder urlRetrofitBuilder = new URLRetrofitBuilder();
+    String baseUrl = AppEnvironmentVariables.BASE_URL;
+    Retrofit retrofit = urlRetrofitBuilder.buildRetrofit(baseUrl, true);
+    api = retrofit.create(ConsumerApi.class);
+  }
 
-    // 獲取實例
-    public static ConsumerService getInstance() {
-        return ConsumerService.SingletonHolder.INSTANCE;
-    }
+  // 獲取實例
+  public static ConsumerService getInstance() {
+    return ConsumerService.SingletonHolder.INSTANCE;
+  }
 
-    public Observable<MainPageModel> mainPage(boolean isObserveOnIO) {
-        User user = UserService.getInstance().user;
-        String authKey = user.authKey();
-        return mapPayLoadToModel(api.mainPage(authKey), isObserveOnIO, MainPageModel.class);
-    }
+  public Observable<MainPageModel> mainPage(boolean isObserveOnIO) {
+    User user = UserService.getInstance().user;
+    String authKey = user.authKey();
+    return mapPayLoadToModel(api.mainPage(authKey), isObserveOnIO, MainPageModel.class);
+  }
 
-    public Observable<Result> createOrder(OrderModel model, boolean isObserveOnIO) {
-        User user = UserService.getInstance().user;
-        String authKey = user.authKey();
-        String json = new Gson().toJson(model);
-        return mapToResult(api.orderCreate(authKey, json), isObserveOnIO);
-    }
+  public Observable<Result> createOrder(OrderModel model, boolean isObserveOnIO) {
+    User user = UserService.getInstance().user;
+    String authKey = user.authKey();
+    String json = new Gson().toJson(model);
+    return mapToResult(api.orderCreate(authKey, json), isObserveOnIO);
+  }
 
-    // 創建實例
-    private static class SingletonHolder {
-        @SuppressLint("StaticFieldLeak")
-        private static final ConsumerService INSTANCE = new ConsumerService();
-    }
+  // 創建實例
+  private static class SingletonHolder {
+    @SuppressLint("StaticFieldLeak")
+    private static final ConsumerService INSTANCE = new ConsumerService();
+  }
 }

@@ -16,7 +16,7 @@ import io.reactivex.disposables.Disposables;
 import io.reactivex.functions.Consumer;
 
 class HomePresenter extends BasePresenter {
-    private HomeView view;
+  private HomeView view;
 
     @SuppressLint("CheckResult")
     HomePresenter(HomeView view) {
@@ -25,31 +25,30 @@ class HomePresenter extends BasePresenter {
         subscribeNoteRelay();
     }
 
-    private void getHomePageData() {
-        ConsumerService.getInstance().mainPage(false).subscribe(new Observer<MainPageModel>() {
-            @Override
-            public void onSubscribe(Disposable d) {
+  private void getHomePageData() {
+    ConsumerService.getInstance()
+        .mainPage(false)
+        .subscribe(
+            new Observer<MainPageModel>() {
+              @Override
+              public void onSubscribe(Disposable d) {}
 
-            }
-
-            @Override
-            public void onNext(MainPageModel model) {
+              @Override
+              public void onNext(MainPageModel model) {
                 Log.i("HomePresenter", model.toString());
                 view.onSetMainPageData(model);
-            }
+              }
 
-            @Override
-            public void onError(Throwable e) {
+              @Override
+              public void onError(Throwable e) {
                 view.onSetMessage(e.getMessage(), FancyToast.ERROR);
                 e.printStackTrace();
-            }
+              }
 
-            @Override
-            public void onComplete() {
-
-            }
-        });
-    }
+              @Override
+              public void onComplete() {}
+            });
+  }
 
     void logout() {
         UserService.getInstance().saveUser(new User());

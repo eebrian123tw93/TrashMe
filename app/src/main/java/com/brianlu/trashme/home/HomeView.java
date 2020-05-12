@@ -4,9 +4,8 @@ import com.brianlu.trashme.base.BaseView;
 import com.brianlu.trashme.model.MainPageModel;
 
 public interface HomeView extends BaseView {
-    void moveToLogin();
+  void moveToLogin();
 
-    void onSetMainPageData(MainPageModel mode);
-
+  void onSetMainPageData(MainPageModel mode);
     void onSetNote(String note);
 }

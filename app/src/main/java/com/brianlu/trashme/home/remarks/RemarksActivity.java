@@ -11,7 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.brianlu.trashme.R;
 import com.brianlu.trashme.core.View.ViewExtension;
 
-public class RemarksActivity extends AppCompatActivity implements RemarksView, ViewExtension, View.OnClickListener {
+public class RemarksActivity extends AppCompatActivity
+    implements RemarksView, ViewExtension, View.OnClickListener {
 
   private RemarksPresenter presenter;
 
@@ -39,7 +40,6 @@ public class RemarksActivity extends AppCompatActivity implements RemarksView, V
 
     setRadius(saveButton, Color.rgb(254, 59, 91));
     saveButton.setTextColor(Color.WHITE);
-
   }
 
   @Override
@@ -53,7 +53,6 @@ public class RemarksActivity extends AppCompatActivity implements RemarksView, V
         finish();
         break;
     }
-
   }
 
   @Override
