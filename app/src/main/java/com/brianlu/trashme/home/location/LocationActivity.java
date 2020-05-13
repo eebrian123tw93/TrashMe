@@ -151,7 +151,7 @@ public class LocationActivity extends AppCompatActivity implements ViewExtension
         Log.i("LocationActivity", "requestLocationUpdates");
         loadingDialog.showLoading();
         locationManager.requestLocationUpdates(
-            LocationManager.NETWORK_PROVIDER, 1000, 10, this); // <7>
+            LocationManager.NETWORK_PROVIDER, 100, 10, this); // <7>
         break;
       case R.id.back_button:
         finish();
