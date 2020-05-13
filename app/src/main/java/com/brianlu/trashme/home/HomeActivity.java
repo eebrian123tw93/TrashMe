@@ -17,6 +17,7 @@ import com.brianlu.trashme.core.View.dialog.ConfirmDialog;
 import com.brianlu.trashme.home.location.LocationActivity;
 import com.brianlu.trashme.home.remarks.RemarksActivity;
 import com.brianlu.trashme.login.LoginActivity;
+import com.brianlu.trashme.model.LocationModel;
 import com.brianlu.trashme.model.MainPageModel;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
@@ -103,11 +104,16 @@ public class HomeActivity extends AppCompatActivity
     recycleTrashPriceTextView.setText(mode.getRecycleTrashPrice() + "NT/kg");
     normalTrashPriceTextView.setText(mode.getNormalTrashPrice() + "NT/kg");
     mixedTrashPriceTextView.setText(mode.getMixedTrashPrice() + "NT/kg");
-    locationNameTextView.setText(mode.getLocationName());
-    pickupOrderTimesTextView.setText(mode.getPickupOrderTimes() + "");
+
+    pickupOrderTimesTextView.setText(mode.getUserInfoExtended().getPickupOrderTimes() + "");
   }
     @Override
     public void onSetNote(String note) {
         noteTextView.setText(note);
     }
+
+  @Override
+  public void onSetLocation(LocationModel model) {
+    locationNameTextView.setText(model.getLocationName());
+  }
 }

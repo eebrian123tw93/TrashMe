@@ -3,6 +3,7 @@ package com.brianlu.trashme.api.user;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.brianlu.trashme.base.BaseService;
 import com.brianlu.trashme.core.AppEnvironmentVariables;
@@ -28,7 +29,9 @@ public class UserService extends BaseService implements ServiceExtension {
   private final UserApi api;
   public User user;
   private static final String USER_NOTE = "user_note";
+  private static final String USER_LOCATION = "user_location";
   public BehaviorRelay<String> noteRelay = BehaviorRelay.create();
+  public BehaviorRelay<LocationModel>locationRelay = BehaviorRelay.create();
 
   private UserService() {
     super();
@@ -38,6 +41,7 @@ public class UserService extends BaseService implements ServiceExtension {
     api = retrofit.create(UserApi.class);
     readUser();
     readNote();
+    readLocation();
   }
         
 
@@ -48,6 +52,27 @@ public class UserService extends BaseService implements ServiceExtension {
 
   public boolean isLogin() {
     return user != null;
+  }
+
+  public void saveLocation(LocationModel model) {
+
+    String modelJson = new Gson().toJson(model, LocationModel.class);
+
+    context
+        .getSharedPreferences(PROFILE, Context.MODE_PRIVATE)
+        .edit()
+        .putString(USER_LOCATION, modelJson)
+        .apply();
+    readLocation();
+  }
+
+  private void readLocation() {
+    SharedPreferences sharedPreferences =
+        context.getSharedPreferences(PROFILE, Context.MODE_PRIVATE);
+    String json = sharedPreferences.getString(USER_LOCATION, "");
+    LocationModel model = new Gson().fromJson(json, LocationModel.class);
+    Log.i("LocationModel", model.toString());
+    locationRelay.accept(model);
   }
 
   public void saveUser(User user) {
@@ -91,6 +116,7 @@ public class UserService extends BaseService implements ServiceExtension {
         .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
         .unsubscribeOn(Schedulers.io());
   }
+
   public void saveNote(String note){
       context.getSharedPreferences(PROFILE, Context.MODE_PRIVATE).edit()
           .putString(USER_NOTE, note).apply();
@@ -106,7 +132,10 @@ public class UserService extends BaseService implements ServiceExtension {
   public Observable<Result> updateLocation(@NonNull LocationModel model, boolean isObserveOnIO) {
     String authKey = user.authKey();
     String json = new Gson().toJson(model);
-    return mapToResult(api.updateLocation(authKey, json), isObserveOnIO);
+    return mapToResult(api.updateLocation(authKey, json), isObserveOnIO)
+        .doOnNext(result -> {
+            saveLocation(model);
+        });
   }
 
   public Observable<ResponseBody> forgotPassword(@NonNull String email, boolean isObserveOnIO) {

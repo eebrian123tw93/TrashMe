@@ -6,14 +6,14 @@ import android.util.Log;
 import com.brianlu.trashme.api.consumer.ConsumerService;
 import com.brianlu.trashme.api.user.UserService;
 import com.brianlu.trashme.base.BasePresenter;
+import com.brianlu.trashme.model.LocationModel;
 import com.brianlu.trashme.model.MainPageModel;
 import com.brianlu.trashme.model.User;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.disposables.Disposables;
-import io.reactivex.functions.Consumer;
+
 
 class HomePresenter extends BasePresenter {
   private HomeView view;
@@ -21,8 +21,9 @@ class HomePresenter extends BasePresenter {
     @SuppressLint("CheckResult")
     HomePresenter(HomeView view) {
         this.view = view;
-        getHomePageData();
         subscribeNoteRelay();
+        subscribeLocationRelay();
+        getHomePageData();
     }
 
   private void getHomePageData() {
@@ -78,4 +79,28 @@ class HomePresenter extends BasePresenter {
             }
         });
     }
+
+    private void subscribeLocationRelay(){
+    UserService.getInstance().locationRelay.subscribe(new Observer<LocationModel>() {
+      @Override
+      public void onSubscribe(Disposable d) {
+
+      }
+
+      @Override
+      public void onNext(LocationModel model) {
+        view.onSetLocation(model);
+      }
+
+      @Override
+      public void onError(Throwable e) {
+
+      }
+
+      @Override
+      public void onComplete() {
+
+      }
+    });
+  }
 }

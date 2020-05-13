@@ -19,7 +19,8 @@ interface UserApi {
   @GET("/TrashMe/User/Login")
   Observable<Response<ResponseBody>> login(@Header("Authorization") String authKey);
 
-  @GET("/TrashMe/User/Update/Location")
+  @POST("/TrashMe/User/Update/Location")
+  @Headers({"Content-Type:application/json"})
   Observable<Response<ResponseBody>> updateLocation(
       @Header("Authorization") String authKey, @Body String body);
 

@@ -7,8 +7,17 @@ public class MainPageModel {
   double recycleTrashPrice;
   double normalTrashPrice;
   double mixedTrashPrice;
-  String locationName;
-  Double latitude;
-  Double longitude;
-  int pickupOrderTimes;
+  UserInfoExtended userInfoExtended;
+
+  @Data
+  static public class UserInfoExtended {
+    String locationName;
+    Double latitude;
+    Double longitude;
+    int pickupOrderTimes;
+    String name;
+    String profilePicUrl;
+  }
+
 }
+

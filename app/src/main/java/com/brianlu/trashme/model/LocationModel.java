@@ -1,8 +1,11 @@
 package com.brianlu.trashme.model;
 
+import lombok.Data;
+
+@Data
 public class LocationModel {
-  double latitude;
-  double longitude;
+  Double latitude;
+  Double longitude;
   String locationName;
   String userType;
 }
