@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.brianlu.trashme.R;
 import com.brianlu.trashme.core.View.ViewExtension;
 import com.brianlu.trashme.core.View.dialog.ConfirmDialog;
+import com.brianlu.trashme.home.location.LocationActivity;
 import com.brianlu.trashme.home.remarks.RemarksActivity;
 import com.brianlu.trashme.login.LoginActivity;
 import com.brianlu.trashme.model.MainPageModel;
@@ -44,7 +45,7 @@ public class HomeActivity extends AppCompatActivity
     locationNameTextView = findViewById(R.id.locationName_textView);
     pickupOrderTimesTextView = findViewById(R.id.pickupOrderTimes_textView);
     cardView = findViewById(R.id.note_cardView);
-        noteTextView = findViewById(R.id.note_textView);
+    noteTextView = findViewById(R.id.note_textView);
 
     cardView.setOnClickListener(this);
     userPictureImageView.setOnClickListener(this);
@@ -55,7 +56,7 @@ public class HomeActivity extends AppCompatActivity
     recycleTrashConstraintLayout.setOnClickListener(this);
     normalTrashConstraintLayout.setOnClickListener(this);
     mixedTrashConstraintLayout.setOnClickListener(this);
-     presenter = new HomePresenter(this);
+    presenter = new HomePresenter(this);
   }
        
   @Override
@@ -80,6 +81,10 @@ public class HomeActivity extends AppCompatActivity
         break;
       case R.id.RecycleTrashContraintLayout:
         onSetMessage("r", FancyToast.INFO);
+      case R.id.location_cardView:
+        Intent intentToLocation = new Intent(this, LocationActivity.class);
+        intentToLocation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intentToLocation);
         break;
     }
   }

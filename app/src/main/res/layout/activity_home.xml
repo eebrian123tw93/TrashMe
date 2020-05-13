@@ -275,6 +275,7 @@
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/location_cardView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
@@ -282,6 +283,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_weight="1"
                 android:background="@color/colorAccent"
+                android:onClick="onClick"
                 app:cardBackgroundColor="#c8005d"
                 app:cardCornerRadius="4dp"
                 app:cardUseCompatPadding="true"

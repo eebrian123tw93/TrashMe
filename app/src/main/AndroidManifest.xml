@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:name=".base.BaseApplication"
@@ -19,7 +21,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="InnerclassSeparator"
         tools:targetApi="n">
-        <activity android:name=".home.remarks.RemarksActivity"></activity>
+        <activity android:name=".home.location.LocationActivity"></activity>
+        <activity android:name=".home.remarks.RemarksActivity" />
         <activity
             android:name=".logo.LogoActivity"
             android:noHistory="true">
