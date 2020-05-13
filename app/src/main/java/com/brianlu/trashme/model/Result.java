@@ -8,20 +8,19 @@ import lombok.Data;
 
 @Data
 public class Result {
-    private int code;
-    private String message;
-    private Map<String, Object> payload;
+  private int code;
+  private String message;
+  private Map<String, Object> payload;
 
-    public void checkAPIResultOk() throws APIException {
-        if (code != 1) {
-            throw new APIException(code, message);
-        }
+  public void checkAPIResultOk() throws APIException {
+    if (code != 1) {
+      throw new APIException(code, message);
     }
+  }
 
-    public void checkPayLoadIsNotNuLL() throws Exception {
-        if (payload == null || payload.isEmpty()) {
-            throw new Exception("payload is empty");
-        }
+  public void checkPayLoadIsNotNuLL() throws Exception {
+    if (payload == null || payload.isEmpty()) {
+      throw new Exception("payload is empty");
     }
-
+  }
 }

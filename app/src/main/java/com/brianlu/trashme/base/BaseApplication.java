@@ -9,17 +9,18 @@ import com.jakewharton.threetenabp.AndroidThreeTen;
 
 @SuppressLint("Registered")
 public class BaseApplication extends Application {
-    @SuppressLint("StaticFieldLeak")
-    private static Context context;
-    public static Context getContext() {
-        return context;
-    }
+  @SuppressLint("StaticFieldLeak")
+  private static Context context;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        context = this;
-        ImgurClient.initialize("7611ce223ea0842");
-        AndroidThreeTen.init(this);
-    }
+  public static Context getContext() {
+    return context;
+  }
+
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    context = this;
+    ImgurClient.initialize("7611ce223ea0842");
+    AndroidThreeTen.init(this);
+  }
 }
