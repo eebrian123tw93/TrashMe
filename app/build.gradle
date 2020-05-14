@@ -73,4 +73,5 @@ dependencies {
     implementation 'org.osmdroid:osmdroid-android:6.1.6'
 
     implementation 'com.github.NaikSoftware:StompProtocolAndroid:1.6.4'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
 }

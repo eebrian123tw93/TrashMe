@@ -71,6 +71,7 @@ public interface ServiceExtension {
       Flowable<StompMessage> messageObservable) {
 
       return messageObservable.map(StompMessage::getPayload)
+          .doOnNext(System.out::println)
           .map(s -> new GsonBuilder().create().fromJson(s, StompMessageModel.class))
           .doOnNext(System.out::println)
           .toObservable();
