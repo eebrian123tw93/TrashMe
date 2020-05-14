@@ -42,7 +42,11 @@ public class LoginPresenter extends BasePresenter {
                 }
 
                 @Override
-                public void onError(Throwable e) {}
+                public void onError(Throwable e) {
+                  view.onLoginFail();
+                  view.onSetMessage("登入失敗", FancyToast.ERROR);
+                  e.printStackTrace();
+                }
 
                 @Override
                 public void onComplete() {}
