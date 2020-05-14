@@ -81,7 +81,11 @@ public class HomeActivity extends AppCompatActivity
         startActivity(intentToRemarks);
         break;
       case R.id.RecycleTrashContraintLayout:
-        onSetMessage("r", FancyToast.INFO);
+        break;
+      case R.id.NormalTrashContraintLayout:
+        break;
+      case R.id.MixedTrashContraintLayout:
+        break;
       case R.id.location_cardView:
         Intent intentToLocation = new Intent(this, LocationActivity.class);
         intentToLocation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
