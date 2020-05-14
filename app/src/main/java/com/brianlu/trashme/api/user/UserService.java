@@ -71,8 +71,10 @@ public class UserService extends BaseService implements ServiceExtension {
         context.getSharedPreferences(PROFILE, Context.MODE_PRIVATE);
     String json = sharedPreferences.getString(USER_LOCATION, "");
     LocationModel model = new Gson().fromJson(json, LocationModel.class);
-    Log.i("LocationModel", model.toString());
-    locationRelay.accept(model);
+    if (model != null){
+      Log.i("LocationModel", model.toString());
+      locationRelay.accept(model);
+    }
   }
 
   public void saveUser(User user) {
