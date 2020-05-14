@@ -85,31 +85,6 @@ class HomePresenter extends BasePresenter {
     model.setLatitude(locationModel.getLatitude());
     model.setLongitude(locationModel.getLongitude());
     OrderService.getInstance().connect();
-    OrderService.getInstance().typeRelay.subscribe(new Observer<LifecycleEvent.Type>() {
-      @Override
-      public void onSubscribe(Disposable d) {
-
-      }
-
-      @Override
-      public void onNext(LifecycleEvent.Type type) {
-        Log.i("HomePresenter", LifecycleEvent.Type.OPENED.toString());
-        if (type == LifecycleEvent.Type.OPENED){
-          OrderService.getInstance().createOrder(model);
-        }
-        onComplete();
-      }
-
-      @Override
-      public void onError(Throwable e) {
-
-      }
-
-      @Override
-      public void onComplete() {
-
-      }
-    });
     OrderService.getInstance().messageRelay.subscribe(new Observer<StompMessageModel>() {
       @Override
       public void onSubscribe(Disposable d) {
@@ -156,6 +131,31 @@ class HomePresenter extends BasePresenter {
       @Override
       public void onError(Throwable e) {
         Log.i("HomePresenter", e.getMessage());
+      }
+
+      @Override
+      public void onComplete() {
+
+      }
+    });
+    OrderService.getInstance().typeRelay.subscribe(new Observer<LifecycleEvent.Type>() {
+      @Override
+      public void onSubscribe(Disposable d) {
+
+      }
+
+      @Override
+      public void onNext(LifecycleEvent.Type type) {
+        Log.i("HomePresenter", LifecycleEvent.Type.OPENED.toString());
+        if (type == LifecycleEvent.Type.OPENED){
+          OrderService.getInstance().createOrder(model);
+        }
+        onComplete();
+      }
+
+      @Override
+      public void onError(Throwable e) {
+
       }
 
       @Override

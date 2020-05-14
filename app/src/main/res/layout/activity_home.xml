@@ -363,17 +363,20 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView17">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <ImageView
                                 android:id="@+id/imageView13"
-                                android:layout_height="0dp"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
                                 android:layout_marginStart="5dp"
                                 android:layout_marginTop="5dp"
+                                android:layout_marginEnd="5dp"
                                 android:layout_marginBottom="5dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintDimensionRatio="w,1:1"
+                                app:layout_constraintDimensionRatio="w,"
+                                app:layout_constraintEnd_toStartOf="@+id/locationName_textView"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:srcCompat="@drawable/location" />
@@ -383,13 +386,11 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
-                                android:layout_marginEnd="5dp"
                                 android:maxLines="2"
                                 android:text="元智大學"
                                 android:textColor="#55298f"
                                 android:textSize="20sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@+id/imageView13"
                                 app:layout_constraintTop_toTopOf="parent" />
 
