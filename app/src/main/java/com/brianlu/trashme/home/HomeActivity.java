@@ -35,6 +35,10 @@ public class HomeActivity extends AppCompatActivity
   HomePresenter presenter;
     TextView noteTextView;
 
+
+  ConstraintLayout orderStatusConstraintLayout;
+  TextView orderStatusTextView;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -46,6 +50,8 @@ public class HomeActivity extends AppCompatActivity
     mixedTrashPriceTextView = findViewById(R.id.mixedTrashPrice_textView);
     locationNameTextView = findViewById(R.id.locationName_textView);
     pickupOrderTimesTextView = findViewById(R.id.pickupOrderTimes_textView);
+    orderStatusConstraintLayout = findViewById(R.id.order_status_view);
+    orderStatusTextView = findViewById(R.id.order_status_textView);
     cardView = findViewById(R.id.note_cardView);
     noteTextView = findViewById(R.id.note_textView);
 
@@ -58,6 +64,9 @@ public class HomeActivity extends AppCompatActivity
     recycleTrashConstraintLayout.setOnClickListener(this);
     normalTrashConstraintLayout.setOnClickListener(this);
     mixedTrashConstraintLayout.setOnClickListener(this);
+
+    orderStatusConstraintLayout.setVisibility(View.GONE);
+    orderStatusConstraintLayout.setOnClickListener(this);
     presenter = new HomePresenter(this);
   }
        
@@ -128,5 +137,15 @@ public class HomeActivity extends AppCompatActivity
   @Override
   public void onSetLocation(LocationModel model) {
     locationNameTextView.setText(model.getLocationName());
+  }
+
+  @Override
+  public void onSetOrderStatusView(int visible) {
+    orderStatusConstraintLayout.setVisibility(visible);
+  }
+
+  @Override
+  public void onSetOrderStateText(String text) {
+    orderStatusTextView.setText(text);
   }
 }

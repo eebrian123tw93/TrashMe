@@ -119,7 +119,7 @@ public class OrderService extends BaseService implements ServiceExtension {
         .observeOn(AndroidSchedulers.mainThread());
 
     topicDisposable =
-        mapToMessageModel(stompObservable).subscribe(topicMessage -> {}, Throwable::printStackTrace);
+        mapToMessageModel(stompObservable).subscribe(topicMessage -> {messageRelay.accept(topicMessage);}, Throwable::printStackTrace);
 
     compositeDisposable.add(topicDisposable);
     stompClient.connect();
