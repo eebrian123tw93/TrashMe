@@ -3,18 +3,22 @@ package com.brianlu.trashme.model;
 import android.util.Base64;
 import android.util.Log;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class User {
 
   private String name;
-  private String password;
   private String email;
+  private String password;
+
+  public User(String name, String email, String password) {
+    this.name = name;
+    this.email = email;
+    this.password = password;
+  }
 
   public User() {}
 
