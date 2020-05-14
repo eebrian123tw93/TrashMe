@@ -5,15 +5,6 @@ import java.util.Map;
 
 import lombok.Data;
 
-enum OperationType {
-  SERVER_CREATED_ORDER("SERVER_CREATED_ORDER"),
-  SERVER_ACCEPTED_ORDER("SERVER_ACCEPTED_ORDER"),
-  LOCATION_UPDATE("LOCATION_UPDATE"),
-  SERVER_FINISHED_ORDER("SERVER_FINISHED_ORDER"),
-  OTHER("OTHER");
-  OperationType(String normal) {}
-}
-
 
 @Data
 public class StompMessageModel {

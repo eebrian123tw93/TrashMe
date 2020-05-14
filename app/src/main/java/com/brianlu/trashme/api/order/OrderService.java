@@ -7,13 +7,17 @@ import com.brianlu.trashme.api.user.UserService;
 import com.brianlu.trashme.base.BaseService;
 import com.brianlu.trashme.core.AppEnvironmentVariables;
 import com.brianlu.trashme.core.ServiceExtension;
+import com.brianlu.trashme.model.OperationType;
 import com.brianlu.trashme.model.OrderModel;
 import com.brianlu.trashme.model.StompMessageModel;
 import com.brianlu.trashme.model.User;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.jakewharton.rxrelay2.PublishRelay;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -68,6 +72,7 @@ public class OrderService extends BaseService implements ServiceExtension {
 
       }
     });
+
   }
 
   // 獲取實例
@@ -82,6 +87,11 @@ public class OrderService extends BaseService implements ServiceExtension {
   }
 
   public void connect() {
+
+    if(stompClient != null && stompClient.isConnected()) {
+      disconnect();
+    }
+
     User user = UserService.getInstance().user;
     String authKey = user.authKey();
 
@@ -136,9 +146,9 @@ public class OrderService extends BaseService implements ServiceExtension {
   }
 
   private void sendMessage(String destination, String data) {
-
-    if (stompClient == null || !stompClient.isConnected()) {return;}
-
+    Log.i("OrderService", data);
+    if (stompClient == null) {return;}
+    Log.i("OrderService", data);
     Disposable disposable =
         stompClient
             .send(destination, data)
@@ -150,7 +160,18 @@ public class OrderService extends BaseService implements ServiceExtension {
   }
 
   public void createOrder(OrderModel model) {
-    String json = new Gson().toJson(model);
+
+    ObjectMapper mapObject = new ObjectMapper();
+    Map <String, Object> map = mapObject.convertValue(model, new TypeReference<Map<String, Object>>(){});
+
+    StompMessageModel messageModel = new StompMessageModel();
+    messageModel.setOperationType(OperationType.CREATE_ORDER);
+    messageModel.setPayload(map);
+
+
+    String json = new Gson().toJson(messageModel);
+    Log.i("OrderService", messageModel.toString());
+
     sendMessage(sendPath,json);
   }
 

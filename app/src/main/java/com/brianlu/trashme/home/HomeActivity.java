@@ -19,6 +19,7 @@ import com.brianlu.trashme.home.remarks.RemarksActivity;
 import com.brianlu.trashme.login.LoginActivity;
 import com.brianlu.trashme.model.LocationModel;
 import com.brianlu.trashme.model.MainPageModel;
+import com.brianlu.trashme.model.TrashType;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 public class HomeActivity extends AppCompatActivity
@@ -86,10 +87,13 @@ public class HomeActivity extends AppCompatActivity
         startActivity(intentToRemarks);
         break;
       case R.id.RecycleTrashContraintLayout:
+        presenter.createOrder(TrashType.RECYCLE);
         break;
       case R.id.NormalTrashContraintLayout:
+        presenter.createOrder(TrashType.NORMAL);
         break;
       case R.id.MixedTrashContraintLayout:
+        presenter.createOrder(TrashType.MIX);
         break;
       case R.id.location_cardView:
         Intent intentToLocation = new Intent(this, LocationActivity.class);
