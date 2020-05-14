@@ -14,8 +14,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.brianlu.trashme.R;
 import com.brianlu.trashme.core.View.ViewExtension;
 import com.brianlu.trashme.core.View.dialog.ConfirmDialog;
+import com.brianlu.trashme.home.location.LocationActivity;
 import com.brianlu.trashme.home.remarks.RemarksActivity;
 import com.brianlu.trashme.login.LoginActivity;
+import com.brianlu.trashme.model.LocationModel;
 import com.brianlu.trashme.model.MainPageModel;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
@@ -30,13 +32,13 @@ public class HomeActivity extends AppCompatActivity
       pickupOrderTimesTextView;
   CardView cardView;
   HomePresenter presenter;
+    TextView noteTextView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_home);
     userPictureImageView = findViewById(R.id.userpicture_imageView);
-    presenter = new HomePresenter(this);
 
     recycleTrashPriceTextView = findViewById(R.id.recycleTrashPrice_textView);
     normalTrashPriceTextView = findViewById(R.id.normalTrashPrice_textView);
@@ -44,6 +46,7 @@ public class HomeActivity extends AppCompatActivity
     locationNameTextView = findViewById(R.id.locationName_textView);
     pickupOrderTimesTextView = findViewById(R.id.pickupOrderTimes_textView);
     cardView = findViewById(R.id.note_cardView);
+    noteTextView = findViewById(R.id.note_textView);
 
     cardView.setOnClickListener(this);
     userPictureImageView.setOnClickListener(this);
@@ -54,8 +57,9 @@ public class HomeActivity extends AppCompatActivity
     recycleTrashConstraintLayout.setOnClickListener(this);
     normalTrashConstraintLayout.setOnClickListener(this);
     mixedTrashConstraintLayout.setOnClickListener(this);
+    presenter = new HomePresenter(this);
   }
-
+       
   @Override
   public void onWindowFocusChanged(boolean hasFocus) {
     super.onWindowFocusChanged(hasFocus);
@@ -78,6 +82,10 @@ public class HomeActivity extends AppCompatActivity
         break;
       case R.id.RecycleTrashContraintLayout:
         onSetMessage("r", FancyToast.INFO);
+      case R.id.location_cardView:
+        Intent intentToLocation = new Intent(this, LocationActivity.class);
+        intentToLocation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intentToLocation);
         break;
     }
   }
@@ -96,7 +104,16 @@ public class HomeActivity extends AppCompatActivity
     recycleTrashPriceTextView.setText(mode.getRecycleTrashPrice() + "NT/kg");
     normalTrashPriceTextView.setText(mode.getNormalTrashPrice() + "NT/kg");
     mixedTrashPriceTextView.setText(mode.getMixedTrashPrice() + "NT/kg");
-    locationNameTextView.setText(mode.getLocationName());
-    pickupOrderTimesTextView.setText(mode.getPickupOrderTimes() + "");
+
+    pickupOrderTimesTextView.setText(mode.getUserInfoExtended().getPickupOrderTimes() + "");
+  }
+    @Override
+    public void onSetNote(String note) {
+        noteTextView.setText(note);
+    }
+
+  @Override
+  public void onSetLocation(LocationModel model) {
+    locationNameTextView.setText(model.getLocationName());
   }
 }
