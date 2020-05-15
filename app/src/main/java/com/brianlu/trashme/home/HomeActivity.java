@@ -20,7 +20,6 @@ import com.brianlu.trashme.login.LoginActivity;
 import com.brianlu.trashme.model.LocationModel;
 import com.brianlu.trashme.model.MainPageModel;
 import com.brianlu.trashme.model.TrashType;
-import com.shashank.sony.fancytoastlib.FancyToast;
 
 public class HomeActivity extends AppCompatActivity
     implements ViewExtension, HomeView, View.OnClickListener {
@@ -102,7 +101,7 @@ public class HomeActivity extends AppCompatActivity
         presenter.createOrder(TrashType.NORMAL);
         break;
       case R.id.MixedTrashContraintLayout:
-        presenter.createOrder(TrashType.MIX);
+        presenter.createOrder(TrashType.MIXED);
         break;
       case R.id.location_cardView:
         Intent intentToLocation = new Intent(this, LocationActivity.class);

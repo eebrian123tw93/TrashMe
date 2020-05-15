@@ -15,24 +15,27 @@ public class LocationPresenter extends BasePresenter {
   private LocationView view;
   private LocationModel model;
 
-  LocationPresenter(LocationView view){
+  LocationPresenter(LocationView view) {
     this.view = view;
 
     model = UserService.getInstance().locationRelay.getValue();
-    if (model != null) {
+    if (model != null && model.getLatitude() != null && model.getLongitude() != null) {
       view.onSetLocation(model);
     }
-
   }
 
-  void setLocationModel(LocationModel model){
+  void setLocationModel(LocationModel model) {
     this.model = model;
     view.onSetLocation(model);
   }
 
-  void updateLocation(){
+  void updateLocation() {
 
-    if (model == null || model.getLatitude() == null || model.getLongitude() == null || model.getLocationName() == null || model.getLocationName().isEmpty()) {
+    if (model == null
+        || model.getLatitude() == null
+        || model.getLongitude() == null
+        || model.getLocationName() == null
+        || model.getLocationName().isEmpty()) {
       view.onSetMessage("請點擊定位按鈕", FancyToast.INFO);
       return;
     }
@@ -59,5 +62,4 @@ public class LocationPresenter extends BasePresenter {
               public void onComplete() {}
             });
   }
-
 }
