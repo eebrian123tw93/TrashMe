@@ -84,11 +84,11 @@ public class HomeActivity extends AppCompatActivity
         Intent intentToProfile = new Intent(this, ProfileActivity.class);
         intentToProfile.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intentToProfile);
-        //        ConfirmDialog confirmDialog = new ConfirmDialog(this);
-        //        confirmDialog.setCustomTitle("登出");
-        //        confirmDialog.setCustomMessage("確定登出");
-        //        confirmDialog.setConfirmOnClickListener(view -> presenter.logout());
-        //        confirmDialog.show();
+//                ConfirmDialog confirmDialog = new ConfirmDialog(this);
+//                confirmDialog.setCustomTitle("登出");
+//                confirmDialog.setCustomMessage("確定登出");
+//                confirmDialog.setConfirmOnClickListener(view -> presenter.logout());
+//                confirmDialog.show();
         break;
       case R.id.note_cardView:
         Intent intentToRemarks = new Intent(this, RemarksActivity.class);
