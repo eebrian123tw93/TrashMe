@@ -10,4 +10,7 @@ public interface HomeView extends BaseView {
   void onSetMainPageData(MainPageModel mode);
   void onSetNote(String note);
   void onSetLocation(LocationModel model);
+
+  void onSetOrderStatusView(int visible);
+  void onSetOrderStateText(String text);
 }
