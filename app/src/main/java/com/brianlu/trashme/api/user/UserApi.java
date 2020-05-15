@@ -32,4 +32,7 @@ interface UserApi {
   @POST("/TrashMe/User/Profile/Edit")
   Observable<Response<ResponseBody>> editProfile(
       @Header("Authorization") String authKey, @Body UserProfileEditRequest body);
+
+  @GET("/TrashMe/User/Profile")
+  Observable<Response<String>> getProfile(@Header("Authorization") String authKey);
 }

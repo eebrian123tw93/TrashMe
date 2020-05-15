@@ -3,6 +3,7 @@ package com.brianlu.trashme.home.profile;
 import com.brianlu.trashme.api.user.UserService;
 import com.brianlu.trashme.base.BasePresenter;
 import com.brianlu.trashme.dto.UserProfileEditRequest;
+import com.brianlu.trashme.model.User;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import io.reactivex.Observer;
@@ -21,6 +22,11 @@ public class ProfilePresenter extends BasePresenter {
   void logout() {
     UserService.getInstance().logout();
     view.moveToLogin();
+  }
+
+  void setProfileData() {
+    User user = UserService.getInstance().user;
+    view.setProfileData(user);
   }
 
   void saveProfile(String userPassword, String name, String profilePicUrl) {
@@ -50,5 +56,12 @@ public class ProfilePresenter extends BasePresenter {
               @Override
               public void onComplete() {}
             });
+
+    User user = UserService.getInstance().user;
+
+    if (userPassword != null) user.setPassword(userPassword);
+    if (name != null) user.setName(name);
+    if (profilePicUrl != null) user.setProfilePicUrl(profilePicUrl);
+    UserService.getInstance().saveUser(user);
   }
 }

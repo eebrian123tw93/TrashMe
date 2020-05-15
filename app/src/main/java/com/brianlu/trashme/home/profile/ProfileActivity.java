@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +16,7 @@ import com.brianlu.trashme.R;
 import com.brianlu.trashme.core.View.ViewExtension;
 import com.brianlu.trashme.core.View.dialog.ConfirmDialog;
 import com.brianlu.trashme.login.LoginActivity;
+import com.brianlu.trashme.model.User;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -30,6 +32,8 @@ public class ProfileActivity extends AppCompatActivity
   private Button logoutButton, saveButton;
 
   private ImageView profilePicImageView;
+
+  private TextView emailTextView;
 
   private ProfilePresenter presenter;
 
@@ -47,11 +51,12 @@ public class ProfileActivity extends AppCompatActivity
     saveButton.setOnClickListener(this);
     presenter = new ProfilePresenter(this);
 
+    emailTextView = findViewById(R.id.profile_email_text_view);
+
     profilePicImageView = findViewById(R.id.profile_pic_image_view);
 
-    //    if ()
-
-    Glide.with(this).load("http://goo.gl/gEgYUd").into(profilePicImageView);
+    Glide.with(this).load("https://goo.gl/gEgYUd").into(profilePicImageView);
+    presenter.setProfileData();
   }
 
   @Override
@@ -64,8 +69,7 @@ public class ProfileActivity extends AppCompatActivity
         confirmDialog.setConfirmOnClickListener(confirmView -> presenter.logout());
         confirmDialog.show();
         break;
-
-      case R.id.save_button:
+      case R.id.save_profile_button:
         presenter.saveProfile(null, profileNameEditText.getText().toString(), profilePicUrl);
         break;
     }
@@ -77,6 +81,12 @@ public class ProfileActivity extends AppCompatActivity
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     startActivity(intent);
     finish();
+  }
+
+  @Override
+  public void setProfileData(User user) {
+    profileNameEditText.setText(user.getName());
+    emailTextView.setText(user.getEmail());
   }
 
   @Override

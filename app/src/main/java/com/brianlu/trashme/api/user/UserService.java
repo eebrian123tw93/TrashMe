@@ -115,9 +115,10 @@ public class UserService extends BaseService implements ServiceExtension {
     return mapToResult(api.register(json), isObserveOnIO);
   }
 
-  public Observable<Response<ResponseBody>> login(@NonNull User user, boolean isObserveOnIO) {
+  public Observable<Response<String>> login(@NonNull User user, boolean isObserveOnIO) {
     String authKey = user.authKey();
-    return api.login(authKey)
+    //    return api.login(authKey)
+    return api.getProfile(authKey)
         .subscribeOn(Schedulers.io())
         .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
         .unsubscribeOn(Schedulers.io());
