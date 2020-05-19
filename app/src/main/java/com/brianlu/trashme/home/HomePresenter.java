@@ -13,7 +13,6 @@ import com.brianlu.trashme.model.MainPageModel;
 import com.brianlu.trashme.model.OrderModel;
 import com.brianlu.trashme.model.StompMessageModel;
 import com.brianlu.trashme.model.TrashType;
-import com.brianlu.trashme.model.User;
 import com.brianlu.trashme.model.WaiterInfoModel;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -119,7 +118,7 @@ class HomePresenter extends BasePresenter {
                     view.onSetOrderStatusView(View.GONE);
                     view.onSetOrderStateText("");
                     OrderService.getInstance().disconnect();
-                    onComplete();
+                    getHomePageData();
                     return;
                   case OTHER:
                     return;
