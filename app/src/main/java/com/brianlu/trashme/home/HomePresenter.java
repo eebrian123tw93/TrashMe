@@ -29,6 +29,7 @@ import ua.naiksoftware.stomp.dto.LifecycleEvent;
 class HomePresenter extends BasePresenter {
   private HomeView view;
   private CompositeDisposable compositeDisposable = new CompositeDisposable();;
+
   @SuppressLint("CheckResult")
   HomePresenter(HomeView view) {
     this.view = view;
@@ -85,23 +86,16 @@ class HomePresenter extends BasePresenter {
     model.setLongitude(locationModel.getLongitude());
     OrderService.getInstance().connect();
 
-    compositeDisposable.add(OrderService.getInstance()
-        .typeRelay
-        .subscribe(type1 -> {
-          Log.i("dopsaopsadsapd","dafl;fsdf");
-          if (type1 == LifecycleEvent.Type.OPENED) {
-            OrderService.getInstance().createOrder(model);
-            if (compositeDisposable !=null)
-              compositeDisposable.clear();
-          }
-
-        }));
-
-  }
-
-  void logout() {
-    UserService.getInstance().saveUser(new User());
-    view.moveToLogin();
+    compositeDisposable.add(
+        OrderService.getInstance()
+            .typeRelay
+            .subscribe(
+                type1 -> {
+                  if (type1 == LifecycleEvent.Type.OPENED) {
+                    OrderService.getInstance().createOrder(model);
+                    if (compositeDisposable != null) compositeDisposable.clear();
+                  }
+                }));
   }
 
   private void subscribeMessageRelay() {
@@ -141,8 +135,8 @@ class HomePresenter extends BasePresenter {
                     (int)
                         getDistanceOfMeter(
                             locationModel.getLatitude(),
-                            waiterInfoModel.getLatitude(),
                             locationModel.getLongitude(),
+                            waiterInfoModel.getLatitude(),
                             waiterInfoModel.getLongitude());
                 switch (stompMessageModel.getOperationType()) {
                   case SERVER_ACCEPTED_ORDER:
@@ -187,7 +181,6 @@ class HomePresenter extends BasePresenter {
             });
   }
 
-
   private void subscribeLocationRelay() {
     UserService.getInstance()
         .locationRelay
@@ -215,7 +208,6 @@ class HomePresenter extends BasePresenter {
     return gson.fromJson(jsonElement, tClass);
   }
 
-
   private static double getDistanceOfMeter(double lat1, double lon1, double lat2, double lon2) {
 
     final int R = 6371; // Radius of the earth
@@ -224,14 +216,10 @@ class HomePresenter extends BasePresenter {
     double a =
         Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
             + Math.cos(Math.toRadians(lat1))
-            * Math.cos(lat2)
-            * Math.sin(lonDistance / 2)
-            * Math.sin(lonDistance / 2);
+                * Math.cos(lat2)
+                * Math.sin(lonDistance / 2)
+                * Math.sin(lonDistance / 2);
     double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c * 1000; // distance
-  }
-
-  private static double rad(double d) {
-    return d * Math.PI / 180.0;
   }
 }
