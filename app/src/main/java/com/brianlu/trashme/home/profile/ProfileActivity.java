@@ -1,6 +1,7 @@
 package com.brianlu.trashme.home.profile;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -72,6 +73,9 @@ public class ProfileActivity extends AppCompatActivity
       case R.id.save_profile_button:
         presenter.saveProfile(null, profileNameEditText.getText().toString(), profilePicUrl);
         break;
+      case R.id.back_button:
+        finish();
+        break;
     }
   }
 
@@ -87,6 +91,16 @@ public class ProfileActivity extends AppCompatActivity
   public void setProfileData(User user) {
     profileNameEditText.setText(user.getName());
     emailTextView.setText(user.getEmail());
+  }
+
+  @Override
+  public void onWindowFocusChanged(boolean hasFocus) {
+    super.onWindowFocusChanged(hasFocus);
+    int color = getResources().getColor(R.color.pink);
+    setRadius(saveButton, color);
+    setRadiusBorder(logoutButton, Color.WHITE,color);
+    saveButton.setTextColor(Color.WHITE);
+    logoutButton.setTextColor(color);
   }
 
   @Override
