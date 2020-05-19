@@ -1,5 +1,7 @@
 package com.brianlu.trashme.api.consumer;
 
+import com.brianlu.trashme.dto.CustomResponse;
+
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -16,4 +18,7 @@ interface ConsumerApi {
   @POST("/TrashMe/Consumer/Order/Create")
   Observable<Response<ResponseBody>> orderCreate(
       @Header("Authorization") String authKey, @Body String body);
+
+//  @GET("/TrashMe/Consumer/Order/Get/All")
+//  Observable<CustomResponse<>>
 }
