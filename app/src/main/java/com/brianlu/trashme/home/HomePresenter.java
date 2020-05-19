@@ -13,6 +13,7 @@ import com.brianlu.trashme.model.MainPageModel;
 import com.brianlu.trashme.model.OrderModel;
 import com.brianlu.trashme.model.StompMessageModel;
 import com.brianlu.trashme.model.TrashType;
+import com.brianlu.trashme.model.User;
 import com.brianlu.trashme.model.WaiterInfoModel;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -37,6 +38,7 @@ class HomePresenter extends BasePresenter {
     subscribeNoteRelay();
     subscribeLocationRelay();
     subscribeMessageRelay();
+    subscribeUserRelay();
     getHomePageData();
   }
 
@@ -204,6 +206,27 @@ class HomePresenter extends BasePresenter {
               @Override
               public void onNext(LocationModel model) {
                 view.onSetLocation(model);
+              }
+
+              @Override
+              public void onError(Throwable e) {}
+
+              @Override
+              public void onComplete() {}
+            });
+  }
+
+  private void subscribeUserRelay() {
+    UserService.getInstance()
+        .userBehaviorRelay
+        .subscribe(
+            new Observer<User>() {
+              @Override
+              public void onSubscribe(Disposable d) {}
+
+              @Override
+              public void onNext(User model) {
+                view.onSetName(model.getName());
               }
 
               @Override

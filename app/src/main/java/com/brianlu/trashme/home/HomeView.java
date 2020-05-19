@@ -20,4 +20,6 @@ public interface HomeView extends BaseView {
   void onSetOrderStatusView(int visible);
 
   void onSetOrderStateText(String text);
+
+  void onSetName(String name);
 }
