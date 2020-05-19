@@ -25,7 +25,7 @@ public class ConsumerService extends BaseService implements ServiceExtension {
     super();
     URLRetrofitBuilder urlRetrofitBuilder = new URLRetrofitBuilder();
     String baseUrl = AppEnvironmentVariables.BASE_URL;
-    Retrofit retrofit = urlRetrofitBuilder.buildRetrofit(baseUrl, true);
+    Retrofit retrofit = urlRetrofitBuilder.buildRetrofit(baseUrl);
     api = retrofit.create(ConsumerApi.class);
   }
 
