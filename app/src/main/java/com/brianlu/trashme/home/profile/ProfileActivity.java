@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.asksira.bsimagepicker.BSImagePicker;
+import com.asksira.bsimagepicker.Utils;
 import com.brianlu.trashme.R;
 import com.brianlu.trashme.core.View.ViewExtension;
 import com.brianlu.trashme.core.View.dialog.ConfirmDialog;
@@ -27,7 +28,7 @@ public class ProfileActivity extends AppCompatActivity
         ViewExtension,
         View.OnClickListener,
         BSImagePicker.OnMultiImageSelectedListener,
-        BSImagePicker.OnSingleImageSelectedListener {
+        BSImagePicker.OnSingleImageSelectedListener, BSImagePicker.ImageLoaderDelegate {
 
   private EditText profileNameEditText;
   private Button logoutButton, saveButton;
@@ -55,8 +56,7 @@ public class ProfileActivity extends AppCompatActivity
     emailTextView = findViewById(R.id.profile_email_text_view);
 
     profilePicImageView = findViewById(R.id.profile_pic_image_view);
-
-    Glide.with(this).load("https://goo.gl/gEgYUd").into(profilePicImageView);
+    profilePicImageView.setOnClickListener(this);
     presenter.setProfileData();
   }
 
@@ -75,6 +75,17 @@ public class ProfileActivity extends AppCompatActivity
         break;
       case R.id.back_button:
         finish();
+        break;
+      case R.id.profile_pic_image_view:
+
+        BSImagePicker multiSelectionPicker = new BSImagePicker.Builder("com.brianlu.fileprovider")
+            .setMultiSelectBarBgColor(android.R.color.white) //Default: #FFFFFF. You can also set it to a translucent color.
+            .setMultiSelectTextColor(R.color.primary_text) //Default: #212121(Dark grey). This is the message in the multi-select bottom bar.
+            .setMultiSelectDoneTextColor(R.color.colorAccent) //Default: #388e3c(Green). This is the color of the "Done" TextView.
+            .setOverSelectTextColor(R.color.error_text) //Default: #b71c1c. This is the color of the message shown when user tries to select more than maximum select count.
+            .disableOverSelectionMessage() //You can also decide not to show this over select message.
+            .build();
+        multiSelectionPicker.show(getSupportFragmentManager(),"ticker");
         break;
     }
   }
@@ -104,8 +115,19 @@ public class ProfileActivity extends AppCompatActivity
   }
 
   @Override
-  public void onMultiImageSelected(List<Uri> uriList, String tag) {}
+  public void onMultiImageSelected(List<Uri> uriList, String tag) {
+
+  }
 
   @Override
-  public void onSingleImageSelected(Uri uri, String tag) {}
+  public void onSingleImageSelected(Uri uri, String tag) {
+    Glide.with(this)
+        .load(uri)
+        .into(profilePicImageView);
+  }
+
+  @Override
+  public void loadImage(Uri imageUri, ImageView ivImage) {
+
+  }
 }
