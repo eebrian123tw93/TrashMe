@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.brianlu.trashme.R;
 import com.brianlu.trashme.core.View.ViewExtension;
 import com.brianlu.trashme.home.location.LocationActivity;
+import com.brianlu.trashme.home.orders.OrdersActivity;
 import com.brianlu.trashme.home.profile.ProfileActivity;
 import com.brianlu.trashme.home.remarks.RemarksActivity;
 import com.brianlu.trashme.login.LoginActivity;
@@ -22,8 +23,6 @@ import com.brianlu.trashme.model.MainPageModel;
 import com.brianlu.trashme.model.TrashType;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-
-import org.threeten.bp.LocalDateTime;
 
 public class HomeActivity extends AppCompatActivity
     implements ViewExtension, HomeView, View.OnClickListener {
@@ -37,7 +36,7 @@ public class HomeActivity extends AppCompatActivity
       noteTextView,
       mainPageNameTextView,
       estimateArrivalTimeTextView;
-  CardView cardView;
+  CardView noteCardView, ordersCardView;
   HomePresenter presenter;
 
   ConstraintLayout orderStatusConstraintLayout;
@@ -56,12 +55,14 @@ public class HomeActivity extends AppCompatActivity
     pickupOrderTimesTextView = findViewById(R.id.pickupOrderTimes_textView);
     orderStatusConstraintLayout = findViewById(R.id.order_status_view);
     orderStatusTextView = findViewById(R.id.order_status_textView);
-    cardView = findViewById(R.id.note_cardView);
+    noteCardView = findViewById(R.id.note_cardView);
     noteTextView = findViewById(R.id.note_textView);
     mainPageNameTextView = findViewById(R.id.main_page_name_text_view);
     estimateArrivalTimeTextView = findViewById(R.id.estimate_arrival_time_text_view);
+    ordersCardView = findViewById(R.id.orders_card_view);
+    ordersCardView.setOnClickListener(this);
 
-    cardView.setOnClickListener(this);
+    noteCardView.setOnClickListener(this);
     userPictureImageView.setOnClickListener(this);
 
     ConstraintLayout recycleTrashConstraintLayout = findViewById(R.id.RecycleTrashContraintLayout);
@@ -107,6 +108,11 @@ public class HomeActivity extends AppCompatActivity
         Intent intentToLocation = new Intent(this, LocationActivity.class);
         intentToLocation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intentToLocation);
+        break;
+      case R.id.orders_card_view:
+        Intent intentToOrders = new Intent(this, OrdersActivity.class);
+        intentToOrders.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intentToOrders);
         break;
     }
   }

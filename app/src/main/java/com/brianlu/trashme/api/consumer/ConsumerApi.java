@@ -1,6 +1,9 @@
 package com.brianlu.trashme.api.consumer;
 
 import com.brianlu.trashme.dto.CustomResponse;
+import com.brianlu.trashme.dto.PickupOrderInfo;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -19,6 +22,6 @@ interface ConsumerApi {
   Observable<Response<ResponseBody>> orderCreate(
       @Header("Authorization") String authKey, @Body String body);
 
-//  @GET("/TrashMe/Consumer/Order/Get/All")
-//  Observable<CustomResponse<>>
+  @GET("/TrashMe/Consumer/Order/Get/All")
+  Observable<CustomResponse<List<PickupOrderInfo>>> getAllOrders(@Header("Authorization") String authKey);
 }
