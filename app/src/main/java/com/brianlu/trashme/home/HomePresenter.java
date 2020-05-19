@@ -13,11 +13,12 @@ import com.brianlu.trashme.model.MainPageModel;
 import com.brianlu.trashme.model.OrderModel;
 import com.brianlu.trashme.model.StompMessageModel;
 import com.brianlu.trashme.model.TrashType;
-import com.brianlu.trashme.model.User;
 import com.brianlu.trashme.model.WaiterInfoModel;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.shashank.sony.fancytoastlib.FancyToast;
+
+import org.threeten.bp.LocalDateTime;
 
 import java.util.Map;
 
@@ -114,12 +115,23 @@ class HomePresenter extends BasePresenter {
                   case SERVER_CREATED_ORDER:
                     view.onSetOrderStatusView(View.VISIBLE);
                     view.onSetOrderStateText("已建立訂單");
+
+                    // todo: remove this code
+                    LocalDateTime arrivalTime = LocalDateTime.now().plusMinutes(1);
+                    String timeString = arrivalTime.getHour() + ":" + arrivalTime.getMinute();
+                    if (arrivalTime.getHour() < 12 && arrivalTime.getHour() >= 0)
+                      timeString = "上午" + timeString;
+                    else if (arrivalTime.getHour() == 12) timeString = "中午" + timeString;
+                    else timeString = "下午" + timeString;
+                    view.onSetEstimateArrivalTime(timeString);
                     return;
                   case SERVER_FINISHED_ORDER:
                     view.onSetOrderStatusView(View.GONE);
                     view.onSetOrderStateText("");
+                    view.onSetEstimateArrivalTime("");
                     OrderService.getInstance().disconnect();
-                    onComplete();
+                    getHomePageData();
+                    view.onSetMessage("訂單完成", FancyToast.SUCCESS);
                     return;
                   case OTHER:
                     return;

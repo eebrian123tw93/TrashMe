@@ -433,7 +433,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="857"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"
                         android:textStyle="bold"
@@ -583,10 +582,9 @@
                         app:srcCompat="@drawable/clock" />
 
                     <TextView
-                        android:id="@+id/textView24"
+                        android:id="@+id/estimate_arrival_time_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7:40 p.m."
                         android:textColor="@android:color/white"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"

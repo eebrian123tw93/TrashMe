@@ -23,6 +23,8 @@ import com.brianlu.trashme.model.TrashType;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import org.threeten.bp.LocalDateTime;
+
 public class HomeActivity extends AppCompatActivity
     implements ViewExtension, HomeView, View.OnClickListener {
 
@@ -33,7 +35,8 @@ public class HomeActivity extends AppCompatActivity
       locationNameTextView,
       pickupOrderTimesTextView,
       noteTextView,
-      mainPageNameTextView;
+      mainPageNameTextView,
+      estimateArrivalTimeTextView;
   CardView cardView;
   HomePresenter presenter;
 
@@ -56,6 +59,7 @@ public class HomeActivity extends AppCompatActivity
     cardView = findViewById(R.id.note_cardView);
     noteTextView = findViewById(R.id.note_textView);
     mainPageNameTextView = findViewById(R.id.main_page_name_text_view);
+    estimateArrivalTimeTextView = findViewById(R.id.estimate_arrival_time_text_view);
 
     cardView.setOnClickListener(this);
     userPictureImageView.setOnClickListener(this);
@@ -139,6 +143,11 @@ public class HomeActivity extends AppCompatActivity
   @Override
   public void onSetLocation(LocationModel model) {
     locationNameTextView.setText(model.getLocationName());
+  }
+
+  @Override
+  public void onSetEstimateArrivalTime(String timeString) {
+    estimateArrivalTimeTextView.setText(timeString);
   }
 
   @Override
