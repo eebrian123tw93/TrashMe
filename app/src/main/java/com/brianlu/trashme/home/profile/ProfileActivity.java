@@ -1,15 +1,19 @@
 package com.brianlu.trashme.home.profile;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.asksira.bsimagepicker.BSImagePicker;
@@ -17,18 +21,20 @@ import com.asksira.bsimagepicker.Utils;
 import com.brianlu.trashme.R;
 import com.brianlu.trashme.core.View.ViewExtension;
 import com.brianlu.trashme.core.View.dialog.ConfirmDialog;
+import com.brianlu.trashme.core.View.dialog.LoadingDialog;
 import com.brianlu.trashme.login.LoginActivity;
 import com.brianlu.trashme.model.User;
 import com.bumptech.glide.Glide;
+import com.nguyenhoanglam.imagepicker.model.Config;
+import com.nguyenhoanglam.imagepicker.model.Image;
+import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker;
 
 import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity
     implements ProfileView,
         ViewExtension,
-        View.OnClickListener,
-        BSImagePicker.OnMultiImageSelectedListener,
-        BSImagePicker.OnSingleImageSelectedListener, BSImagePicker.ImageLoaderDelegate {
+        View.OnClickListener {
 
   private EditText profileNameEditText;
   private Button logoutButton, saveButton;
@@ -39,7 +45,7 @@ public class ProfileActivity extends AppCompatActivity
 
   private ProfilePresenter presenter;
 
-  private String profilePicUrl = null;
+  private LoadingDialog loadingDialog;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +58,7 @@ public class ProfileActivity extends AppCompatActivity
     saveButton = findViewById(R.id.save_profile_button);
     saveButton.setOnClickListener(this);
     presenter = new ProfilePresenter(this);
-
+    loadingDialog = new LoadingDialog(this);
     emailTextView = findViewById(R.id.profile_email_text_view);
 
     profilePicImageView = findViewById(R.id.profile_pic_image_view);
@@ -78,14 +84,16 @@ public class ProfileActivity extends AppCompatActivity
         break;
       case R.id.profile_pic_image_view:
 
-        BSImagePicker multiSelectionPicker = new BSImagePicker.Builder("com.brianlu.fileprovider")
-            .setMultiSelectBarBgColor(android.R.color.white) //Default: #FFFFFF. You can also set it to a translucent color.
-            .setMultiSelectTextColor(R.color.primary_text) //Default: #212121(Dark grey). This is the message in the multi-select bottom bar.
-            .setMultiSelectDoneTextColor(R.color.colorAccent) //Default: #388e3c(Green). This is the color of the "Done" TextView.
-            .setOverSelectTextColor(R.color.error_text) //Default: #b71c1c. This is the color of the message shown when user tries to select more than maximum select count.
-            .disableOverSelectionMessage() //You can also decide not to show this over select message.
-            .build();
-        multiSelectionPicker.show(getSupportFragmentManager(),"ticker");
+        ImagePicker.with(this)
+            .setFolderMode(true)
+            .setFolderTitle("Album")
+            .setDirectoryName("Image Picker")
+            .setMultipleMode(true)
+            .setShowNumberIndicator(true)
+            .setMaxSize(1)
+            .setLimitMessage("You can select up to 1 image")
+            .setRequestCode(100)
+            .start();
         break;
     }
   }
@@ -115,19 +123,39 @@ public class ProfileActivity extends AppCompatActivity
   }
 
   @Override
-  public void onMultiImageSelected(List<Uri> uriList, String tag) {
+  protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
+    if (requestCode == Config.RC_PICK_IMAGES && resultCode == Activity.RESULT_OK && data != null) {
+      List<Image> images = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
+      // Do stuff with image's path or id. For example:
+      if (images!=null&& !images.isEmpty()) {
+        Image image = images.get(0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+          Uri uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, Long.toString(image.getId()));
+          Glide.with(this)
+              .load(uri)
+              .into(profilePicImageView);
+          presenter.uploadPhoto(uri);
+        } else {
+          String path = image.getPath();
+          Glide.with(this)
+              .load(path)
+              .into(profilePicImageView);
+          presenter.uploadPhoto(path);
+        }
+
+      }
+    }
+
+    super.onActivityResult(requestCode, resultCode, data);
   }
 
   @Override
-  public void onSingleImageSelected(Uri uri, String tag) {
-    Glide.with(this)
-        .load(uri)
-        .into(profilePicImageView);
-  }
-
-  @Override
-  public void loadImage(Uri imageUri, ImageView ivImage) {
-
+  public void onSetProgressBarVisibility(int visibility) {
+    if (visibility == View.GONE) {
+      loadingDialog.dismissLoading();
+    } else {
+      loadingDialog.showLoading();
+    }
   }
 }
