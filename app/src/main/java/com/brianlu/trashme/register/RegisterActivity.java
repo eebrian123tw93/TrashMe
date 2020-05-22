@@ -138,9 +138,9 @@ public class RegisterActivity extends AppCompatActivity
           imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
         registerPresenter.doRegister(
-            nicknameEditText.getText().toString(),
-            passwordEditText.getText().toString(),
-            emailEditText.getText().toString());
+            nicknameEditText.getText().toString().trim(),
+            passwordEditText.getText().toString().trim(),
+            emailEditText.getText().toString().trim());
         break;
       case R.id.clear_button:
         registerPresenter.clear();
