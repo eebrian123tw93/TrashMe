@@ -16,8 +16,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.asksira.bsimagepicker.BSImagePicker;
-import com.asksira.bsimagepicker.Utils;
 import com.brianlu.trashme.R;
 import com.brianlu.trashme.core.View.ViewExtension;
 import com.brianlu.trashme.core.View.dialog.ConfirmDialog;
@@ -44,6 +42,8 @@ public class ProfileActivity extends AppCompatActivity
   private TextView emailTextView;
 
   private ProfilePresenter presenter;
+
+  private String profilePicUrl = null;
 
   private LoadingDialog loadingDialog;
 
@@ -77,7 +77,7 @@ public class ProfileActivity extends AppCompatActivity
         confirmDialog.show();
         break;
       case R.id.save_profile_button:
-        presenter.saveProfile(null, profileNameEditText.getText().toString(), profilePicUrl);
+        presenter.saveProfile(profileNameEditText.getText().toString());
         break;
       case R.id.back_button:
         finish();
@@ -135,13 +135,13 @@ public class ProfileActivity extends AppCompatActivity
           Glide.with(this)
               .load(uri)
               .into(profilePicImageView);
-          presenter.uploadPhoto(uri);
+          presenter.setLocalPhotoPath(uri);
         } else {
           String path = image.getPath();
           Glide.with(this)
               .load(path)
               .into(profilePicImageView);
-          presenter.uploadPhoto(path);
+          presenter.setLocalPhotoPath(path);
         }
 
       }
