@@ -43,6 +43,7 @@
 
             <com.brianlu.trashme.core.View.RoundRectCornerImageView
                 android:id="@+id/userpicture_imageView"
+                android:scaleType="centerCrop"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="25dp"

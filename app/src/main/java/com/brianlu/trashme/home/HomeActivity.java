@@ -23,8 +23,6 @@ import com.brianlu.trashme.model.TrashType;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-import org.threeten.bp.LocalDateTime;
-
 public class HomeActivity extends AppCompatActivity
     implements ViewExtension, HomeView, View.OnClickListener {
 
@@ -36,12 +34,12 @@ public class HomeActivity extends AppCompatActivity
       pickupOrderTimesTextView,
       noteTextView,
       mainPageNameTextView,
-      estimateArrivalTimeTextView;
+      estimateArrivalTimeTextView,
+      orderStatusTextView;
   CardView cardView;
   HomePresenter presenter;
 
   ConstraintLayout orderStatusConstraintLayout;
-  TextView orderStatusTextView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -158,5 +156,10 @@ public class HomeActivity extends AppCompatActivity
   @Override
   public void onSetOrderStateText(String text) {
     orderStatusTextView.setText(text);
+  }
+
+  @Override
+  public void onSetName(String name) {
+    mainPageNameTextView.setText(name);
   }
 }
