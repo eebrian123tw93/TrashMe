@@ -42,7 +42,7 @@ class HomePresenter extends BasePresenter {
     getHomePageData();
   }
 
-  private void getHomePageData() {
+  void getHomePageData() {
     ConsumerService.getInstance()
         .mainPage(false)
         .subscribe(

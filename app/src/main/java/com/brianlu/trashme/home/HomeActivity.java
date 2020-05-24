@@ -21,6 +21,7 @@ import com.brianlu.trashme.model.LocationModel;
 import com.brianlu.trashme.model.MainPageModel;
 import com.brianlu.trashme.model.TrashType;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
 public class HomeActivity extends AppCompatActivity
@@ -130,7 +131,15 @@ public class HomeActivity extends AppCompatActivity
         .applyDefaultRequestOptions(
             new RequestOptions().placeholder(R.drawable.avatar).error(R.drawable.avatar))
         .load(mainPageModel.getUserInfoExtended().getProfilePicUrl())
+        .diskCacheStrategy(DiskCacheStrategy.NONE)
+        .skipMemoryCache(true)
         .into(userPictureImageView);
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    presenter.getHomePageData();
   }
 
   @Override

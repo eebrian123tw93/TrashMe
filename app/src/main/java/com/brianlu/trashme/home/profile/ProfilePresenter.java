@@ -56,8 +56,6 @@ public class ProfilePresenter extends BasePresenter {
 
   private void saveProfile(UserProfileEditRequest requestModel) {
     view.onSetProgressBarVisibility(View.VISIBLE);
-
-
     UserService.getInstance()
         .uploadUser(requestModel, false)
         .subscribe(
@@ -81,6 +79,11 @@ public class ProfilePresenter extends BasePresenter {
               @Override
               public void onComplete() {}
             });
+
+    if (requestModel.getName() != null)
+      UserService.getInstance().user.setName(requestModel.getName());
+    if (requestModel.getProfilePicUrl() != null)
+      UserService.getInstance().user.setProfilePicUrl(requestModel.getProfilePicUrl());
   }
 
   private void uploadPhoto(UserProfileEditRequest requestModel) {
