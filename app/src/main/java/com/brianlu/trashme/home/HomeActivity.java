@@ -20,7 +20,8 @@ import com.brianlu.trashme.login.LoginActivity;
 import com.brianlu.trashme.model.LocationModel;
 import com.brianlu.trashme.model.MainPageModel;
 import com.brianlu.trashme.model.TrashType;
-import com.shashank.sony.fancytoastlib.FancyToast;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 public class HomeActivity extends AppCompatActivity
     implements ViewExtension, HomeView, View.OnClickListener {
@@ -30,14 +31,15 @@ public class HomeActivity extends AppCompatActivity
       normalTrashPriceTextView,
       mixedTrashPriceTextView,
       locationNameTextView,
-      pickupOrderTimesTextView;
+      pickupOrderTimesTextView,
+      noteTextView,
+      mainPageNameTextView,
+      estimateArrivalTimeTextView,
+      orderStatusTextView;
   CardView cardView;
   HomePresenter presenter;
-    TextView noteTextView;
-
 
   ConstraintLayout orderStatusConstraintLayout;
-  TextView orderStatusTextView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,8 @@ public class HomeActivity extends AppCompatActivity
     orderStatusTextView = findViewById(R.id.order_status_textView);
     cardView = findViewById(R.id.note_cardView);
     noteTextView = findViewById(R.id.note_textView);
+    mainPageNameTextView = findViewById(R.id.main_page_name_text_view);
+    estimateArrivalTimeTextView = findViewById(R.id.estimate_arrival_time_text_view);
 
     cardView.setOnClickListener(this);
     userPictureImageView.setOnClickListener(this);
@@ -69,7 +73,7 @@ public class HomeActivity extends AppCompatActivity
     orderStatusConstraintLayout.setOnClickListener(this);
     presenter = new HomePresenter(this);
   }
-       
+
   @Override
   public void onWindowFocusChanged(boolean hasFocus) {
     super.onWindowFocusChanged(hasFocus);
@@ -79,16 +83,9 @@ public class HomeActivity extends AppCompatActivity
   public void onClick(View v) {
     switch (v.getId()) {
       case R.id.userpicture_imageView:
-
-        // todo : profile activity
         Intent intentToProfile = new Intent(this, ProfileActivity.class);
         intentToProfile.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intentToProfile);
-//                ConfirmDialog confirmDialog = new ConfirmDialog(this);
-//                confirmDialog.setCustomTitle("登出");
-//                confirmDialog.setCustomMessage("確定登出");
-//                confirmDialog.setConfirmOnClickListener(view -> presenter.logout());
-//                confirmDialog.show();
         break;
       case R.id.note_cardView:
         Intent intentToRemarks = new Intent(this, RemarksActivity.class);
@@ -102,7 +99,7 @@ public class HomeActivity extends AppCompatActivity
         presenter.createOrder(TrashType.NORMAL);
         break;
       case R.id.MixedTrashContraintLayout:
-        presenter.createOrder(TrashType.MIX);
+        presenter.createOrder(TrashType.MIXED);
         break;
       case R.id.location_cardView:
         Intent intentToLocation = new Intent(this, LocationActivity.class);
@@ -122,21 +119,33 @@ public class HomeActivity extends AppCompatActivity
 
   @SuppressLint("SetTextI18n")
   @Override
-  public void onSetMainPageData(MainPageModel mode) {
-    recycleTrashPriceTextView.setText(mode.getRecycleTrashPrice() + "NT/kg");
-    normalTrashPriceTextView.setText(mode.getNormalTrashPrice() + "NT/kg");
-    mixedTrashPriceTextView.setText(mode.getMixedTrashPrice() + "NT/kg");
-
-    pickupOrderTimesTextView.setText(mode.getUserInfoExtended().getPickupOrderTimes() + "");
+  public void onSetMainPageData(MainPageModel mainPageModel) {
+    recycleTrashPriceTextView.setText(mainPageModel.getRecycleTrashPrice() + "NT/kg");
+    normalTrashPriceTextView.setText(mainPageModel.getNormalTrashPrice() + "NT/kg");
+    mixedTrashPriceTextView.setText(mainPageModel.getMixedTrashPrice() + "NT/kg");
+    pickupOrderTimesTextView.setText(
+        mainPageModel.getUserInfoExtended().getPickupOrderTimes() + "");
+    mainPageNameTextView.setText(mainPageModel.getUserInfoExtended().getName());
+    Glide.with(this)
+        .applyDefaultRequestOptions(
+            new RequestOptions().placeholder(R.drawable.avatar).error(R.drawable.avatar))
+        .load(mainPageModel.getUserInfoExtended().getProfilePicUrl())
+        .into(userPictureImageView);
   }
-    @Override
-    public void onSetNote(String note) {
-        noteTextView.setText(note);
-    }
+
+  @Override
+  public void onSetNote(String note) {
+    noteTextView.setText(note);
+  }
 
   @Override
   public void onSetLocation(LocationModel model) {
     locationNameTextView.setText(model.getLocationName());
+  }
+
+  @Override
+  public void onSetEstimateArrivalTime(String timeString) {
+    estimateArrivalTimeTextView.setText(timeString);
   }
 
   @Override
@@ -147,5 +156,10 @@ public class HomeActivity extends AppCompatActivity
   @Override
   public void onSetOrderStateText(String text) {
     orderStatusTextView.setText(text);
+  }
+
+  @Override
+  public void onSetName(String name) {
+    mainPageNameTextView.setText(name);
   }
 }

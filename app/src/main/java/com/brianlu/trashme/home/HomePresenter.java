@@ -19,20 +19,26 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
+import org.threeten.bp.LocalDateTime;
+
 import java.util.Map;
 
 import io.reactivex.Observer;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import ua.naiksoftware.stomp.dto.LifecycleEvent;
 
 class HomePresenter extends BasePresenter {
   private HomeView view;
+  private CompositeDisposable compositeDisposable = new CompositeDisposable();;
 
   @SuppressLint("CheckResult")
   HomePresenter(HomeView view) {
     this.view = view;
     subscribeNoteRelay();
     subscribeLocationRelay();
+    subscribeMessageRelay();
+    subscribeUserRelay();
     getHomePageData();
   }
 
@@ -61,7 +67,8 @@ class HomePresenter extends BasePresenter {
             });
   }
 
-  public void createOrder(TrashType type) {
+  void createOrder(TrashType type) {
+
     String note = UserService.getInstance().noteRelay.getValue();
 
     LocationModel locationModel = UserService.getInstance().locationRelay.getValue();
@@ -81,6 +88,20 @@ class HomePresenter extends BasePresenter {
     model.setLatitude(locationModel.getLatitude());
     model.setLongitude(locationModel.getLongitude());
     OrderService.getInstance().connect();
+
+    compositeDisposable.add(
+        OrderService.getInstance()
+            .typeRelay
+            .subscribe(
+                type1 -> {
+                  if (type1 == LifecycleEvent.Type.OPENED) {
+                    OrderService.getInstance().createOrder(model);
+                    if (compositeDisposable != null) compositeDisposable.clear();
+                  }
+                }));
+  }
+
+  private void subscribeMessageRelay() {
     OrderService.getInstance()
         .messageRelay
         .subscribe(
@@ -96,11 +117,23 @@ class HomePresenter extends BasePresenter {
                   case SERVER_CREATED_ORDER:
                     view.onSetOrderStatusView(View.VISIBLE);
                     view.onSetOrderStateText("已建立訂單");
+
+                    // todo: remove this code
+                    LocalDateTime arrivalTime = LocalDateTime.now().plusMinutes(1);
+                    String timeString = arrivalTime.getHour() + ":" + arrivalTime.getMinute();
+                    if (arrivalTime.getHour() < 12 && arrivalTime.getHour() >= 0)
+                      timeString = "上午" + timeString;
+                    else if (arrivalTime.getHour() == 12) timeString = "中午" + timeString;
+                    else timeString = "下午" + timeString;
+                    view.onSetEstimateArrivalTime(timeString);
                     return;
                   case SERVER_FINISHED_ORDER:
                     view.onSetOrderStatusView(View.GONE);
                     view.onSetOrderStateText("");
-                    onComplete();
+                    view.onSetEstimateArrivalTime("");
+                    OrderService.getInstance().disconnect();
+                    getHomePageData();
+                    view.onSetMessage("訂單完成", FancyToast.SUCCESS);
                     return;
                   case OTHER:
                     return;
@@ -111,12 +144,13 @@ class HomePresenter extends BasePresenter {
                 }
                 WaiterInfoModel waiterInfoModel = mapToModel(payload, WaiterInfoModel.class);
                 String name = waiterInfoModel.getPickupUser();
+                LocationModel locationModel = UserService.getInstance().locationRelay.getValue();
                 int distance =
                     (int)
                         getDistanceOfMeter(
                             locationModel.getLatitude(),
-                            waiterInfoModel.getLatitude(),
                             locationModel.getLongitude(),
+                            waiterInfoModel.getLatitude(),
                             waiterInfoModel.getLongitude());
                 switch (stompMessageModel.getOperationType()) {
                   case SERVER_ACCEPTED_ORDER:
@@ -138,33 +172,6 @@ class HomePresenter extends BasePresenter {
               @Override
               public void onComplete() {}
             });
-    OrderService.getInstance()
-        .typeRelay
-        .subscribe(
-            new Observer<LifecycleEvent.Type>() {
-              @Override
-              public void onSubscribe(Disposable d) {}
-
-              @Override
-              public void onNext(LifecycleEvent.Type type) {
-                Log.i("HomePresenter", LifecycleEvent.Type.OPENED.toString());
-                if (type == LifecycleEvent.Type.OPENED) {
-                  OrderService.getInstance().createOrder(model);
-                }
-                onComplete();
-              }
-
-              @Override
-              public void onError(Throwable e) {}
-
-              @Override
-              public void onComplete() {}
-            });
-  }
-
-  void logout() {
-    UserService.getInstance().saveUser(new User());
-    view.moveToLogin();
   }
 
   private void subscribeNoteRelay() {
@@ -209,30 +216,45 @@ class HomePresenter extends BasePresenter {
             });
   }
 
+  private void subscribeUserRelay() {
+    UserService.getInstance()
+        .userBehaviorRelay
+        .subscribe(
+            new Observer<User>() {
+              @Override
+              public void onSubscribe(Disposable d) {}
+
+              @Override
+              public void onNext(User model) {
+                view.onSetName(model.getName());
+              }
+
+              @Override
+              public void onError(Throwable e) {}
+
+              @Override
+              public void onComplete() {}
+            });
+  }
+
   private <T> T mapToModel(Map<String, Object> map, Class<T> tClass) {
     Gson gson = new Gson();
     JsonElement jsonElement = gson.toJsonTree(map);
     return gson.fromJson(jsonElement, tClass);
   }
 
-  public static double getDistanceOfMeter(double lat1, double lng1, double lat2, double lng2) {
-    double EARTH_RADIUS = 6378137;
-    double radLat1 = rad(lat1);
-    double radLat2 = rad(lat2);
-    double a = radLat1 - radLat2;
-    double b = rad(lng1) - rad(lng2);
-    double s =
-        2
-            * Math.asin(
-                Math.sqrt(
-                    Math.pow(Math.sin(a / 2), 2)
-                        + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
-    s = s * EARTH_RADIUS;
-    s = Math.round(s * 10000) / 10000;
-    return s;
-  }
+  private static double getDistanceOfMeter(double lat1, double lon1, double lat2, double lon2) {
 
-  private static double rad(double d) {
-    return d * Math.PI / 180.0;
+    final int R = 6371; // Radius of the earth
+    double latDistance = Math.toRadians(lat2 - lat1);
+    double lonDistance = Math.toRadians(lon2 - lon1);
+    double a =
+        Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+            + Math.cos(Math.toRadians(lat1))
+                * Math.cos(lat2)
+                * Math.sin(lonDistance / 2)
+                * Math.sin(lonDistance / 2);
+    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c * 1000; // distance
   }
 }

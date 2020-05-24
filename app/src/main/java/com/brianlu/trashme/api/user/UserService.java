@@ -33,12 +33,13 @@ public class UserService extends BaseService implements ServiceExtension {
   private static final String USER_LOCATION = "user_location";
   public BehaviorRelay<String> noteRelay = BehaviorRelay.create();
   public BehaviorRelay<LocationModel> locationRelay = BehaviorRelay.create();
+  public BehaviorRelay<User> userBehaviorRelay = BehaviorRelay.create();
 
   private UserService() {
     super();
     URLRetrofitBuilder urlRetrofitBuilder = new URLRetrofitBuilder();
     String baseUrl = AppEnvironmentVariables.BASE_URL;
-    Retrofit retrofit = urlRetrofitBuilder.buildRetrofit(baseUrl, true);
+    Retrofit retrofit = urlRetrofitBuilder.buildRetrofit(baseUrl);
     api = retrofit.create(UserApi.class);
     readUser();
     readNote();
@@ -106,6 +107,7 @@ public class UserService extends BaseService implements ServiceExtension {
       this.user = null;
     } else {
       this.user = user;
+      userBehaviorRelay.accept(user);
     }
   }
 

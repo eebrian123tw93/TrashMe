@@ -88,7 +88,7 @@ public class OrderService extends BaseService implements ServiceExtension {
 
   public void connect() {
 
-    if(stompClient != null && stompClient.isConnected()) {
+    if(stompClient != null) {
       disconnect();
     }
 
