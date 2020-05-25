@@ -74,8 +74,8 @@ public class LoginActivity extends AppCompatActivity
         startActivity(intent);
         break;
       case R.id.login_button:
-        String email = emailEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
+        String email = emailEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString().trim();
         presenter.doLogin(email, password);
         break;
       case R.id.forgotPassword_textView:

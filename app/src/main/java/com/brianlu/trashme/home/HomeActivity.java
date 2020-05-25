@@ -22,7 +22,9 @@ import com.brianlu.trashme.model.LocationModel;
 import com.brianlu.trashme.model.MainPageModel;
 import com.brianlu.trashme.model.TrashType;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 public class HomeActivity extends AppCompatActivity
     implements ViewExtension, HomeView, View.OnClickListener {
@@ -35,12 +37,12 @@ public class HomeActivity extends AppCompatActivity
       pickupOrderTimesTextView,
       noteTextView,
       mainPageNameTextView,
-      estimateArrivalTimeTextView;
-  CardView noteCardView, ordersCardView;
+      estimateArrivalTimeTextView,
+      orderStatusTextView;
+  CardView cardView;
   HomePresenter presenter;
 
   ConstraintLayout orderStatusConstraintLayout;
-  TextView orderStatusTextView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,10 @@ public class HomeActivity extends AppCompatActivity
     recycleTrashConstraintLayout.setOnClickListener(this);
     normalTrashConstraintLayout.setOnClickListener(this);
     mixedTrashConstraintLayout.setOnClickListener(this);
+
+    ConstraintLayout pickupUserInfoConstraintLayout =
+        findViewById(R.id.pickup_user_constraint_layout);
+    pickupUserInfoConstraintLayout.setOnClickListener(this);
 
     orderStatusConstraintLayout.setVisibility(View.GONE);
     orderStatusConstraintLayout.setOnClickListener(this);
@@ -109,6 +115,9 @@ public class HomeActivity extends AppCompatActivity
         intentToLocation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intentToLocation);
         break;
+      case R.id.pickup_user_constraint_layout:
+        onSetMessage("尚未開放", FancyToast.INFO);
+        break;
       case R.id.orders_card_view:
         Intent intentToOrders = new Intent(this, OrdersActivity.class);
         intentToOrders.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -138,7 +147,15 @@ public class HomeActivity extends AppCompatActivity
         .applyDefaultRequestOptions(
             new RequestOptions().placeholder(R.drawable.avatar).error(R.drawable.avatar))
         .load(mainPageModel.getUserInfoExtended().getProfilePicUrl())
+        .diskCacheStrategy(DiskCacheStrategy.NONE)
+        .skipMemoryCache(true)
         .into(userPictureImageView);
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    presenter.getHomePageData();
   }
 
   @Override
@@ -164,5 +181,10 @@ public class HomeActivity extends AppCompatActivity
   @Override
   public void onSetOrderStateText(String text) {
     orderStatusTextView.setText(text);
+  }
+
+  @Override
+  public void onSetName(String name) {
+    mainPageNameTextView.setText(name);
   }
 }

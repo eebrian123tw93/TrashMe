@@ -33,6 +33,7 @@ public class UserService extends BaseService implements ServiceExtension {
   private static final String USER_LOCATION = "user_location";
   public BehaviorRelay<String> noteRelay = BehaviorRelay.create();
   public BehaviorRelay<LocationModel> locationRelay = BehaviorRelay.create();
+  public BehaviorRelay<User> userBehaviorRelay = BehaviorRelay.create();
 
   private UserService() {
     super();
@@ -106,6 +107,7 @@ public class UserService extends BaseService implements ServiceExtension {
       this.user = null;
     } else {
       this.user = user;
+      userBehaviorRelay.accept(user);
     }
   }
 

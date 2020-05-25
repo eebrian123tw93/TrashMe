@@ -13,6 +13,7 @@ import com.brianlu.trashme.model.MainPageModel;
 import com.brianlu.trashme.model.OrderModel;
 import com.brianlu.trashme.model.StompMessageModel;
 import com.brianlu.trashme.model.TrashType;
+import com.brianlu.trashme.model.User;
 import com.brianlu.trashme.model.WaiterInfoModel;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -37,10 +38,11 @@ class HomePresenter extends BasePresenter {
     subscribeNoteRelay();
     subscribeLocationRelay();
     subscribeMessageRelay();
+    subscribeUserRelay();
     getHomePageData();
   }
 
-  private void getHomePageData() {
+  void getHomePageData() {
     ConsumerService.getInstance()
         .mainPage(false)
         .subscribe(
@@ -115,6 +117,7 @@ class HomePresenter extends BasePresenter {
                   case SERVER_CREATED_ORDER:
                     view.onSetOrderStatusView(View.VISIBLE);
                     view.onSetOrderStateText("已建立訂單");
+                    OrderService.getInstance().orderOngoing = true;
 
                     // todo: remove this code
                     LocalDateTime arrivalTime = LocalDateTime.now().plusMinutes(1);
@@ -132,8 +135,10 @@ class HomePresenter extends BasePresenter {
                     OrderService.getInstance().disconnect();
                     getHomePageData();
                     view.onSetMessage("訂單完成", FancyToast.SUCCESS);
+                    OrderService.getInstance().orderOngoing = false;
                     return;
                   case OTHER:
+                    OrderService.getInstance().orderOngoing = false;
                     return;
                 }
 
@@ -165,6 +170,7 @@ class HomePresenter extends BasePresenter {
               @Override
               public void onError(Throwable e) {
                 Log.i("HomePresenter", e.getMessage());
+                OrderService.getInstance().orderOngoing = false;
               }
 
               @Override
@@ -204,6 +210,27 @@ class HomePresenter extends BasePresenter {
               @Override
               public void onNext(LocationModel model) {
                 view.onSetLocation(model);
+              }
+
+              @Override
+              public void onError(Throwable e) {}
+
+              @Override
+              public void onComplete() {}
+            });
+  }
+
+  private void subscribeUserRelay() {
+    UserService.getInstance()
+        .userBehaviorRelay
+        .subscribe(
+            new Observer<User>() {
+              @Override
+              public void onSubscribe(Disposable d) {}
+
+              @Override
+              public void onNext(User model) {
+                view.onSetName(model.getName());
               }
 
               @Override
