@@ -1,5 +1,6 @@
 package com.brianlu.trashme.home.orderCompleted;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -42,6 +43,7 @@ public class OrderCompletedActivity extends AppCompatActivity
               @Override
               public void onSubscribe(Disposable d) {}
 
+              @SuppressLint("DefaultLocale")
               @Override
               public void onNext(CustomResponse<List<PickupOrderInfo>> customResponse) {
                 List<PickupOrderInfo> models = customResponse.getPayload();
@@ -75,6 +77,8 @@ public class OrderCompletedActivity extends AppCompatActivity
       Intent browserIntent =
           new Intent(Intent.ACTION_VIEW, Uri.parse("https://forms.gle/TD2TMNYufcVcsYaaA"));
       startActivity(browserIntent);
+    } else if (v.getId() == R.id.back_button){
+      finish();
     }
   }
 }

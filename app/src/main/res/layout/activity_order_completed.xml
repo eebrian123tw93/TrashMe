@@ -21,6 +21,7 @@
             android:layout_height="30dp"
             android:layout_marginStart="16dp"
             android:background="@drawable/back"
+            android:onClick="onClick"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
