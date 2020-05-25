@@ -28,4 +28,5 @@ public interface HomeView extends BaseView {
   void stopRiderAnimation();
 
   void moveToOrderComplete();
+
 }

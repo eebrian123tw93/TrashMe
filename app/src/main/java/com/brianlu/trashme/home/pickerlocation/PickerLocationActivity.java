@@ -1,17 +1,19 @@
 package com.brianlu.trashme.home.pickerlocation;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
-import android.location.Geocoder;
-import android.location.LocationManager;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.widget.Button;
+import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
+
 import com.brianlu.trashme.R;
-import com.brianlu.trashme.home.location.LocationPresenter;
 import com.brianlu.trashme.model.LocationModel;
 
 import org.osmdroid.api.IMapController;
@@ -22,16 +24,20 @@ import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.OverlayItem;
 
-public class PickerLocationActivity extends AppCompatActivity implements MapListener, PickerLocationView {
+import java.util.ArrayList;
+
+public class PickerLocationActivity extends AppCompatActivity implements MapListener, PickerLocationView, View.OnClickListener {
 
 
   private MapView mapView;
   private TextView infoTextView;
-  private Marker myMarker;
-  private Marker pickerMarker;
-  private PickerPresenter presenter;
+  private ItemizedIconOverlay<OverlayItem> myOverlay;
+  private ItemizedIconOverlay<OverlayItem> pickerOverlay;
+  private PickerLocationPresenter presenter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +53,9 @@ public class PickerLocationActivity extends AppCompatActivity implements MapList
     mapView.setMultiTouchControls(true);
     mapView.addMapListener(this);
 
-    presenter = new PickerPresenter(this);
+    presenter = new PickerLocationPresenter(this);
+
+
   }
 
   @Override
@@ -72,26 +80,42 @@ public class PickerLocationActivity extends AppCompatActivity implements MapList
     GeoPoint startPoint = new GeoPoint(model.getLatitude(), model.getLongitude());
     mapController.animateTo(startPoint);
 
-
-    mapView.getOverlays().remove(myMarker);
-    myMarker = new Marker(mapView);
-    myMarker.setPosition(startPoint);
-    myMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-    mapView.getOverlays().add(myMarker);
+    mapView.getOverlays().remove(myOverlay);
+    Drawable d = getResources().getDrawable(R.drawable.user_location);
+    Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
+    Bitmap mmm =  Bitmap.createScaledBitmap(bitmap, (int) (30 * getResources().getDisplayMetrics().density), (int) (30 * getResources().getDisplayMetrics().density),true);
+    Drawable marker = new BitmapDrawable(getResources(),mmm);
+    myOverlay = new ItemizedIconOverlay<>(
+        new ArrayList<>(), marker, null,
+        null);
+    // gc: last GeoPoint
+    OverlayItem overlayItem = new OverlayItem(null, null, startPoint);
+    myOverlay.addItem(overlayItem);
+    mapView.getOverlays().add(myOverlay);
   }
 
   @Override
   public void onSetPickerLocation(LocationModel model) {
-    IMapController mapController = mapView.getController();
-    mapController.setZoom(18.0);
-    GeoPoint startPoint = new GeoPoint(model.getLatitude(), model.getLongitude());
-    mapController.animateTo(startPoint);
 
-    mapView.getOverlays().remove(pickerMarker);
-    pickerMarker = new Marker(mapView);
-    pickerMarker.setPosition(startPoint);
-    pickerMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-    mapView.getOverlays().add(pickerMarker);
+    GeoPoint startPoint = new GeoPoint(model.getLatitude(), model.getLongitude());
+    mapView.getOverlays().remove(pickerOverlay);
+    Drawable d = getResources().getDrawable(R.drawable.picker_location);
+    Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
+    Drawable marker = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, (int) (30 * getResources().getDisplayMetrics().density), (int) (30 * getResources().getDisplayMetrics().density), true));
+    pickerOverlay = new ItemizedIconOverlay<>(
+        new ArrayList<>(), marker, null,
+        null);
+    // gc: last GeoPoint
+    OverlayItem overlayItem = new OverlayItem(null, null, startPoint);
+    pickerOverlay.addItem(overlayItem);
+    mapView.getOverlays().add(pickerOverlay);
+    mapView.invalidate();
+
+  }
+
+  @Override
+  public void onSetInfo(String info) {
+    infoTextView.setText(info);
   }
 
 
@@ -103,5 +127,24 @@ public class PickerLocationActivity extends AppCompatActivity implements MapList
   @Override
   public boolean onZoom(ZoomEvent event) {
     return false;
+  }
+
+  public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth)
+  {
+    int width = bm.getWidth();
+    int height = bm.getHeight();
+    float scaleWidth = ((float) newWidth) / width;
+    float scaleHeight = ((float) newHeight) / height;
+    // create a matrix for the manipulation
+    Matrix matrix = new Matrix();
+    // resize the bit map
+    matrix.postScale(scaleWidth, scaleHeight);
+    // recreate the new Bitmap
+    return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+  }
+
+  @Override
+  public void onClick(View v) {
+    finish();
   }
 }

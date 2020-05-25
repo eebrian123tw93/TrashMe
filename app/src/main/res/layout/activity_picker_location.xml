@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
                 app:cardCornerRadius="6dp"
                 app:layout_constraintBottom_toBottomOf="@+id/map"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -105,6 +106,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textView3"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/map" />
+            app:srcCompat="@drawable/picker_location_white" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,4 +8,5 @@ interface PickerLocationView extends BaseView {
 
   void onSetPickerLocation(LocationModel model);
 
+  void onSetInfo(String info);
 }
