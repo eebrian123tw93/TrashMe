@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity
       mainPageNameTextView,
       estimateArrivalTimeTextView,
       orderStatusTextView;
-  CardView cardView;
+  CardView noteCardView,ordersCardView ;
   HomePresenter presenter;
 
   ConstraintLayout orderStatusConstraintLayout;

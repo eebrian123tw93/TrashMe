@@ -15,8 +15,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="InnerclassSeparator"
         tools:replace="android:allowBackup"
-        <activity android:name=".home.orders.OrdersActivity"></activity>
         tools:targetApi="q">
+        <activity android:name=".home.orders.OrdersActivity"/>
         <activity android:name=".home.profile.ProfileActivity" />
         <activity android:name=".home.location.LocationActivity" />
         <activity android:name=".home.remarks.RemarksActivity" />
