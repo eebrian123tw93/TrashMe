@@ -23,6 +23,7 @@ import com.brianlu.trashme.model.TrashType;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 public class HomeActivity extends AppCompatActivity
     implements ViewExtension, HomeView, View.OnClickListener {
@@ -70,6 +71,10 @@ public class HomeActivity extends AppCompatActivity
     normalTrashConstraintLayout.setOnClickListener(this);
     mixedTrashConstraintLayout.setOnClickListener(this);
 
+    ConstraintLayout pickupUserInfoConstraintLayout =
+        findViewById(R.id.pickup_user_constraint_layout);
+    pickupUserInfoConstraintLayout.setOnClickListener(this);
+
     orderStatusConstraintLayout.setVisibility(View.GONE);
     orderStatusConstraintLayout.setOnClickListener(this);
     presenter = new HomePresenter(this);
@@ -106,6 +111,9 @@ public class HomeActivity extends AppCompatActivity
         Intent intentToLocation = new Intent(this, LocationActivity.class);
         intentToLocation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intentToLocation);
+        break;
+      case R.id.pickup_user_constraint_layout:
+        onSetMessage("尚未開放", FancyToast.INFO);
         break;
     }
   }

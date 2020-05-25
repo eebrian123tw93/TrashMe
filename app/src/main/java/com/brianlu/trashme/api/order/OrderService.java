@@ -44,6 +44,8 @@ public class OrderService extends BaseService implements ServiceExtension {
   private String sendPath = AppEnvironmentVariables.WEB_SOCKET_SEND_PATH;
   private Disposable topicDisposable;
 
+  public Boolean orderOngoing = false;
+
   public BehaviorRelay<LifecycleEvent.Type> typeRelay = BehaviorRelay.createDefault(LifecycleEvent.Type.CLOSED);
   public PublishRelay<StompMessageModel> messageRelay = PublishRelay.create();
 
