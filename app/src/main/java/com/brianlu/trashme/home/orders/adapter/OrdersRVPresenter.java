@@ -22,7 +22,7 @@ class OrdersRVPresenter extends BasePresenter {
   void onBindViewHolder(@NonNull OrdersRVAdapter.ViewHolder viewHolder, int position) {
     PickupOrderInfo model = models.get(position);
     viewHolder.setPickerUser(model.getPickupUser());
-    viewHolder.setWeight(model.getTrashWeight() + "kg");
+    viewHolder.setWeight(String.format("%.1f", model.getTrashWeight()) + "kg");
 
     String status = model.getStatus();
     viewHolder.setStatus(status);
