@@ -138,6 +138,7 @@ class HomePresenter extends BasePresenter {
                     view.onSetMessage("訂單完成", FancyToast.SUCCESS);
                     OrderService.getInstance().orderOngoing = false;
                     view.stopRiderAnimation();
+                    view.moveToOrderComplete();
                     return;
                   case OTHER:
                     OrderService.getInstance().orderOngoing = false;

@@ -15,6 +15,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.brianlu.trashme.R;
 import com.brianlu.trashme.core.View.ViewExtension;
 import com.brianlu.trashme.home.location.LocationActivity;
+import com.brianlu.trashme.home.orderCompleted.OrderCompletedActivity;
 import com.brianlu.trashme.home.orders.OrdersActivity;
 import com.brianlu.trashme.home.profile.ProfileActivity;
 import com.brianlu.trashme.home.remarks.RemarksActivity;
@@ -202,5 +203,12 @@ public class HomeActivity extends AppCompatActivity
   public void stopRiderAnimation() {
     riderAnimation.setFrame(0);
     riderAnimation.pauseAnimation();
+  }
+
+  @Override
+  public void moveToOrderComplete() {
+    Intent intent = new Intent(this, OrderCompletedActivity.class);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    startActivity(intent);
   }
 }
