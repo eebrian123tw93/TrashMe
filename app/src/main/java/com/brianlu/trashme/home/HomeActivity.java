@@ -11,9 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.brianlu.trashme.R;
 import com.brianlu.trashme.core.View.ViewExtension;
 import com.brianlu.trashme.home.location.LocationActivity;
+import com.brianlu.trashme.home.orderCompleted.OrderCompletedActivity;
 import com.brianlu.trashme.home.orders.OrdersActivity;
 import com.brianlu.trashme.home.profile.ProfileActivity;
 import com.brianlu.trashme.home.remarks.RemarksActivity;
@@ -39,8 +41,10 @@ public class HomeActivity extends AppCompatActivity
       mainPageNameTextView,
       estimateArrivalTimeTextView,
       orderStatusTextView;
-  CardView cardView;
+  CardView noteCardView, ordersCardView;
   HomePresenter presenter;
+
+  LottieAnimationView riderAnimation;
 
   ConstraintLayout orderStatusConstraintLayout;
 
@@ -77,6 +81,8 @@ public class HomeActivity extends AppCompatActivity
     ConstraintLayout pickupUserInfoConstraintLayout =
         findViewById(R.id.pickup_user_constraint_layout);
     pickupUserInfoConstraintLayout.setOnClickListener(this);
+
+    riderAnimation = findViewById(R.id.riding_animation);
 
     orderStatusConstraintLayout.setVisibility(View.GONE);
     orderStatusConstraintLayout.setOnClickListener(this);
@@ -186,5 +192,23 @@ public class HomeActivity extends AppCompatActivity
   @Override
   public void onSetName(String name) {
     mainPageNameTextView.setText(name);
+  }
+
+  @Override
+  public void playRiderAnimation() {
+    riderAnimation.playAnimation();
+  }
+
+  @Override
+  public void stopRiderAnimation() {
+    riderAnimation.setFrame(0);
+    riderAnimation.pauseAnimation();
+  }
+
+  @Override
+  public void moveToOrderComplete() {
+    Intent intent = new Intent(this, OrderCompletedActivity.class);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    startActivity(intent);
   }
 }
