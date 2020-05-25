@@ -46,7 +46,7 @@ public class OrderCompletedActivity extends AppCompatActivity
               public void onNext(CustomResponse<List<PickupOrderInfo>> customResponse) {
                 List<PickupOrderInfo> models = customResponse.getPayload();
                 if (!models.isEmpty()) {
-                  kgTextView.setText(models.get(0).getTrashWeight().toString() + "公斤");
+                  kgTextView.setText(String.format("%.1f", models.get(0).getTrashWeight()) + "公斤");
                 }
               }
 
