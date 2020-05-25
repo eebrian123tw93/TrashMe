@@ -1,58 +1,41 @@
 package com.brianlu.trashme.home.orders;
 
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.brianlu.trashme.R;
-import com.brianlu.trashme.api.consumer.ConsumerService;
-import com.brianlu.trashme.core.ProjectUtil;
-import com.brianlu.trashme.dto.CustomResponse;
-import com.brianlu.trashme.dto.PickupOrderInfo;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
-import java.util.List;
+public class OrdersActivity extends AppCompatActivity implements OrdersView, View.OnClickListener {
 
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
+  private RecyclerView recyclerView;
 
-public class OrdersActivity extends AppCompatActivity {
-
-  TextView dataTextView;
+  OrdersPresenter presenter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_orders);
-    dataTextView = findViewById(R.id.data_text_view);
 
-    ConsumerService.getInstance()
-        .getAllOrders(false)
-        .subscribe(
-            new Observer<CustomResponse<List<PickupOrderInfo>>>() {
-              @Override
-              public void onSubscribe(Disposable d) {}
+    recyclerView = findViewById(R.id.recycler_view);
+    final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+    layoutManager.setOrientation(RecyclerView.VERTICAL);
+    recyclerView.setLayoutManager(layoutManager);
 
-              @Override
-              public void onNext(CustomResponse<List<PickupOrderInfo>> customResponse) {
-                try {
-                  dataTextView.setText(
-                      ProjectUtil.OBJECT_MAPPER
-                          .writerWithDefaultPrettyPrinter()
-                          .writeValueAsString(customResponse));
-                } catch (JsonProcessingException e) {
-                  e.printStackTrace();
-                }
-              }
+    presenter = new OrdersPresenter(this);
+    presenter.getOrders();
+  }
 
-              @Override
-              public void onError(Throwable e) {
-                e.printStackTrace();
-              }
+  @Override
+  public void setAdapter(RecyclerView.Adapter adapter) {
+    recyclerView.setAdapter(adapter);
+  }
 
-              @Override
-              public void onComplete() {}
-            });
+  @Override
+  public void onClick(View v) {
+    finish();
   }
 }
