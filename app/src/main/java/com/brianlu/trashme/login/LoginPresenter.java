@@ -2,7 +2,7 @@ package com.brianlu.trashme.login;
 
 import com.brianlu.trashme.api.user.UserService;
 import com.brianlu.trashme.base.BasePresenter;
-import com.brianlu.trashme.core.Util;
+import com.brianlu.trashme.core.ProjectUtil;
 import com.brianlu.trashme.dto.CustomResponse;
 import com.brianlu.trashme.model.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -37,7 +37,7 @@ public class LoginPresenter extends BasePresenter {
                   if (response.isSuccessful()) {
                     try {
                       CustomResponse<User> userCustomResponse =
-                          Util.OBJECT_MAPPER.readValue(
+                          ProjectUtil.OBJECT_MAPPER.readValue(
                               response.body(), new TypeReference<CustomResponse<User>>() {});
                       if (userCustomResponse != null) {
                         user.setName(userCustomResponse.getPayload().getName());
