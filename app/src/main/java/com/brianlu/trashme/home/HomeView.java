@@ -22,4 +22,10 @@ public interface HomeView extends BaseView {
   void onSetOrderStateText(String text);
 
   void onSetName(String name);
+
+  void playRiderAnimation();
+
+  void stopRiderAnimation();
+
+  void moveToOrderComplete();
 }
