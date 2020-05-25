@@ -17,6 +17,7 @@ import com.brianlu.trashme.core.View.ViewExtension;
 import com.brianlu.trashme.home.location.LocationActivity;
 import com.brianlu.trashme.home.orderCompleted.OrderCompletedActivity;
 import com.brianlu.trashme.home.orders.OrdersActivity;
+import com.brianlu.trashme.home.pickerlocation.PickerLocationActivity;
 import com.brianlu.trashme.home.profile.ProfileActivity;
 import com.brianlu.trashme.home.remarks.RemarksActivity;
 import com.brianlu.trashme.login.LoginActivity;
@@ -129,6 +130,9 @@ public class HomeActivity extends AppCompatActivity
         intentToOrders.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intentToOrders);
         break;
+      case R.id.order_status_view:
+        moveToPickerLocation();
+        break;
     }
   }
 
@@ -208,6 +212,12 @@ public class HomeActivity extends AppCompatActivity
   @Override
   public void moveToOrderComplete() {
     Intent intent = new Intent(this, OrderCompletedActivity.class);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    startActivity(intent);
+  }
+
+  public void moveToPickerLocation() {
+    Intent intent = new Intent(this, PickerLocationActivity.class);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     startActivity(intent);
   }

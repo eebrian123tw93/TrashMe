@@ -151,22 +151,20 @@ class HomePresenter extends BasePresenter {
                 }
                 WaiterInfoModel waiterInfoModel = mapToModel(payload, WaiterInfoModel.class);
                 String name = waiterInfoModel.getPickupUser();
-                LocationModel locationModel = UserService.getInstance().locationRelay.getValue();
-                int distance =
-                    (int)
-                        getDistanceOfMeter(
-                            locationModel.getLatitude(),
-                            locationModel.getLongitude(),
-                            waiterInfoModel.getLatitude(),
-                            waiterInfoModel.getLongitude());
+                LocationModel myLocationModel = UserService.getInstance().locationRelay.getValue();
+                LocationModel pickerLocationModel = new LocationModel();
+                pickerLocationModel.setLongitude(waiterInfoModel.getLongitude());
+                pickerLocationModel.setLatitude(waiterInfoModel.getLatitude());
+                int distance = (int) myLocationModel.getDistanceOfMeter(pickerLocationModel);
+
                 switch (stompMessageModel.getOperationType()) {
                   case SERVER_ACCEPTED_ORDER:
                     view.onSetOrderStatusView(View.VISIBLE);
-                    view.onSetOrderStateText(name + " 距離" + distance / 1000 + "公尺 已接受訂單");
+                    view.onSetOrderStateText(name + " 距離" + distance / 1000 + "公里 已接受訂單");
                     return;
                   case LOCATION_UPDATE:
                     view.onSetOrderStatusView(View.VISIBLE);
-                    view.onSetOrderStateText(name + " 距離" + distance / 1000 + "公尺 正在移動...");
+                    view.onSetOrderStateText(name + " 距離" + distance / 1000 + "公里 正在移動...");
                     return;
                 }
               }
@@ -252,18 +250,4 @@ class HomePresenter extends BasePresenter {
     return gson.fromJson(jsonElement, tClass);
   }
 
-  private static double getDistanceOfMeter(double lat1, double lon1, double lat2, double lon2) {
-
-    final int R = 6371; // Radius of the earth
-    double latDistance = Math.toRadians(lat2 - lat1);
-    double lonDistance = Math.toRadians(lon2 - lon1);
-    double a =
-        Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-            + Math.cos(Math.toRadians(lat1))
-                * Math.cos(lat2)
-                * Math.sin(lonDistance / 2)
-                * Math.sin(lonDistance / 2);
-    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c * 1000; // distance
-  }
 }
