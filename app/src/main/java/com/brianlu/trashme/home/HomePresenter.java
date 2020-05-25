@@ -117,6 +117,7 @@ class HomePresenter extends BasePresenter {
                   case SERVER_CREATED_ORDER:
                     view.onSetOrderStatusView(View.VISIBLE);
                     view.onSetOrderStateText("已建立訂單");
+                    OrderService.getInstance().orderOngoing = true;
 
                     // todo: remove this code
                     LocalDateTime arrivalTime = LocalDateTime.now().plusMinutes(1);
@@ -134,8 +135,10 @@ class HomePresenter extends BasePresenter {
                     OrderService.getInstance().disconnect();
                     getHomePageData();
                     view.onSetMessage("訂單完成", FancyToast.SUCCESS);
+                    OrderService.getInstance().orderOngoing = false;
                     return;
                   case OTHER:
+                    OrderService.getInstance().orderOngoing = false;
                     return;
                 }
 
@@ -167,6 +170,7 @@ class HomePresenter extends BasePresenter {
               @Override
               public void onError(Throwable e) {
                 Log.i("HomePresenter", e.getMessage());
+                OrderService.getInstance().orderOngoing = false;
               }
 
               @Override

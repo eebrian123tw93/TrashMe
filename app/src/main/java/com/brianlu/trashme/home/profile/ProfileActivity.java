@@ -88,7 +88,7 @@ public class ProfileActivity extends AppCompatActivity
             .setMultipleMode(true)
             .setShowNumberIndicator(true)
             .setMaxSize(1)
-            .setLimitMessage("You can select up to 1 image")
+            .setLimitMessage("只能選一張照片")
             .setRequestCode(100)
             .start();
         break;
