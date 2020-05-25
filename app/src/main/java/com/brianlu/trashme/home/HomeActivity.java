@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.brianlu.trashme.R;
 import com.brianlu.trashme.core.View.ViewExtension;
 import com.brianlu.trashme.home.location.LocationActivity;
+import com.brianlu.trashme.home.orders.OrdersActivity;
 import com.brianlu.trashme.home.profile.ProfileActivity;
 import com.brianlu.trashme.home.remarks.RemarksActivity;
 import com.brianlu.trashme.login.LoginActivity;
@@ -56,12 +57,14 @@ public class HomeActivity extends AppCompatActivity
     pickupOrderTimesTextView = findViewById(R.id.pickupOrderTimes_textView);
     orderStatusConstraintLayout = findViewById(R.id.order_status_view);
     orderStatusTextView = findViewById(R.id.order_status_textView);
-    cardView = findViewById(R.id.note_cardView);
+    noteCardView = findViewById(R.id.note_cardView);
     noteTextView = findViewById(R.id.note_textView);
     mainPageNameTextView = findViewById(R.id.main_page_name_text_view);
     estimateArrivalTimeTextView = findViewById(R.id.estimate_arrival_time_text_view);
+    ordersCardView = findViewById(R.id.orders_card_view);
+    ordersCardView.setOnClickListener(this);
 
-    cardView.setOnClickListener(this);
+    noteCardView.setOnClickListener(this);
     userPictureImageView.setOnClickListener(this);
 
     ConstraintLayout recycleTrashConstraintLayout = findViewById(R.id.RecycleTrashContraintLayout);
@@ -114,6 +117,11 @@ public class HomeActivity extends AppCompatActivity
         break;
       case R.id.pickup_user_constraint_layout:
         onSetMessage("尚未開放", FancyToast.INFO);
+        break;
+      case R.id.orders_card_view:
+        Intent intentToOrders = new Intent(this, OrdersActivity.class);
+        intentToOrders.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intentToOrders);
         break;
     }
   }
