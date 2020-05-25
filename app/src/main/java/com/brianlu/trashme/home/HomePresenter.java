@@ -127,6 +127,7 @@ class HomePresenter extends BasePresenter {
                     else if (arrivalTime.getHour() == 12) timeString = "中午" + timeString;
                     else timeString = "下午" + timeString;
                     view.onSetEstimateArrivalTime(timeString);
+                    view.playRiderAnimation();
                     return;
                   case SERVER_FINISHED_ORDER:
                     view.onSetOrderStatusView(View.GONE);
@@ -136,9 +137,11 @@ class HomePresenter extends BasePresenter {
                     getHomePageData();
                     view.onSetMessage("訂單完成", FancyToast.SUCCESS);
                     OrderService.getInstance().orderOngoing = false;
+                    view.stopRiderAnimation();
                     return;
                   case OTHER:
                     OrderService.getInstance().orderOngoing = false;
+                    view.stopRiderAnimation();
                     return;
                 }
 
@@ -171,6 +174,7 @@ class HomePresenter extends BasePresenter {
               public void onError(Throwable e) {
                 Log.i("HomePresenter", e.getMessage());
                 OrderService.getInstance().orderOngoing = false;
+                view.stopRiderAnimation();
               }
 
               @Override
