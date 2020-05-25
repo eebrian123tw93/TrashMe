@@ -65,6 +65,14 @@ public class ConsumerService extends BaseService implements ServiceExtension {
         .unsubscribeOn(Schedulers.io());
   }
 
+  public Observable<CustomResponse<List<PickupOrderInfo>>> getLatestOrder(boolean isObserveOnIO) {
+    String authKey = UserService.getInstance().user.authKey();
+    return api.getLatestOrder(authKey)
+        .subscribeOn(Schedulers.io())
+        .observeOn(isObserveOnIO ? Schedulers.io() : AndroidSchedulers.mainThread())
+        .unsubscribeOn(Schedulers.io());
+  }
+
   public Observable<Result> createOrder(OrderModel model, boolean isObserveOnIO) {
     User user = UserService.getInstance().user;
     String authKey = user.authKey();
