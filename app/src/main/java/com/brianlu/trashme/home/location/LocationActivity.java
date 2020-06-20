@@ -82,7 +82,6 @@ public class LocationActivity extends AppCompatActivity implements ViewExtension
 
     IMapController mapController = mapView.getController();
     mapController.setZoom(10.0);
-    //23°58′26″N 120°58′55″E﻿ /
     GeoPoint startPoint = new GeoPoint(25.105497,121.597366);
     mapController.setCenter(startPoint);
 
@@ -177,7 +176,6 @@ public class LocationActivity extends AppCompatActivity implements ViewExtension
     Log.i("LocationActivity","onLocationChanged");
     IMapController mapController = mapView.getController();
     mapController.setZoom(18.0);
-    //23°58′26″N 120°58′55″E﻿ /
     GeoPoint startPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
     mapController.animateTo(startPoint);
 
@@ -231,7 +229,6 @@ public class LocationActivity extends AppCompatActivity implements ViewExtension
     infoTextView.setText(model.getLocationName());
     IMapController mapController = mapView.getController();
     mapController.setZoom(18.0);
-    //23°58′26″N 120°58′55″E﻿ /
     GeoPoint startPoint = new GeoPoint(model.getLatitude(), model.getLongitude());
     mapController.animateTo(startPoint);
 

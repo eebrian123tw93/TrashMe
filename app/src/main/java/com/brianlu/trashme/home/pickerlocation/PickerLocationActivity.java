@@ -76,7 +76,6 @@ public class PickerLocationActivity extends AppCompatActivity implements MapList
   public void onSetLocation(LocationModel model) {
     IMapController mapController = mapView.getController();
     mapController.setZoom(18.0);
-    //23°58′26″N 120°58′55″E﻿ /
     GeoPoint startPoint = new GeoPoint(model.getLatitude(), model.getLongitude());
     mapController.animateTo(startPoint);
 
