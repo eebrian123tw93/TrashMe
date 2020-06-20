@@ -8,6 +8,9 @@ import com.brianlu.trashme.R;
 import com.brianlu.trashme.base.BasePresenter;
 import com.brianlu.trashme.dto.PickupOrderInfo;
 
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,17 +27,28 @@ class OrdersRVPresenter extends BasePresenter {
     viewHolder.setPickerUser(model.getPickupUser());
     viewHolder.setWeight(String.format("%.1f", model.getTrashWeight()) + "kg");
 
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    // todo :fix time zone
+    //
+    //    LocalDateTime a =
+    //        LocalDateTime.ofInstant(
+    //            pickupTime.atZone(ZoneId.of("UTC")).toInstant(), ZonedDateTime.now().getZone());
+
     String status = model.getStatus();
     viewHolder.setStatus(status);
     if (status.equals("FINISHED")) {
       viewHolder.setStatusColor(Color.parseColor("#76BA1B"));
-      viewHolder.setTime(model.getPickupTime());
+      LocalDateTime pickupTime = LocalDateTime.parse(model.getPickupTime()).plusHours(8);
+      viewHolder.setTime(pickupTime.format(dateTimeFormatter));
     } else if (status.equals("ACCEPTED") || status.equals("WAITING")) {
       viewHolder.setStatusColor(Color.parseColor("#B7B0B1"));
-      viewHolder.setTime(model.getOrderTime());
+      LocalDateTime orderTime = LocalDateTime.parse(model.getOrderTime()).plusHours(8);
+      viewHolder.setTime(orderTime.format(dateTimeFormatter));
     } else {
       viewHolder.setStatusColor(Color.parseColor("#d11a2a"));
-      viewHolder.setTime(model.getOrderTime());
+      LocalDateTime orderTime = LocalDateTime.parse(model.getOrderTime()).plusHours(8);
+      viewHolder.setTime(orderTime.format(dateTimeFormatter));
     }
 
     switch (model.getTrashType()) {
