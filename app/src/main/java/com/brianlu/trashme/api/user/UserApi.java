@@ -1,5 +1,7 @@
 package com.brianlu.trashme.api.user;
 
+import com.brianlu.trashme.dto.UserProfileEditRequest;
+
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -26,4 +28,11 @@ interface UserApi {
 
   @GET("/TrashMe/User/Forgot/Password")
   Observable<Response<ResponseBody>> forgotPassword(@Query("email") String email);
+
+  @POST("/TrashMe/User/Profile/Edit")
+  Observable<Response<ResponseBody>> editProfile(
+      @Header("Authorization") String authKey, @Body UserProfileEditRequest body);
+
+  @GET("/TrashMe/User/Profile")
+  Observable<Response<String>> getProfile(@Header("Authorization") String authKey);
 }

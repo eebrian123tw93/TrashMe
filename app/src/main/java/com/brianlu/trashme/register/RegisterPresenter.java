@@ -2,6 +2,7 @@ package com.brianlu.trashme.register;
 
 import com.brianlu.trashme.api.user.UserService;
 import com.brianlu.trashme.base.BasePresenter;
+import com.brianlu.trashme.exception.ApiException;
 import com.brianlu.trashme.model.Result;
 import com.brianlu.trashme.model.User;
 import com.shashank.sony.fancytoastlib.FancyToast;
@@ -53,6 +54,15 @@ class RegisterPresenter extends BasePresenter {
                 @Override
                 public void onError(Throwable e) {
                   registerView.onRegisterResult(false);
+                  if (e instanceof ApiException) {
+                    ApiException apiException = (ApiException) e;
+                    int code = apiException.getCode();
+
+                    if (code == -7) {
+                      registerView.onSetMessage("Email只能使用大小寫a~z、數字或- _ @符號", FancyToast.ERROR);
+                      return;
+                    }
+                  }
                   registerView.onSetMessage(e.getMessage(), FancyToast.ERROR);
                 }
 

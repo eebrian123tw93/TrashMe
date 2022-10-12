@@ -3,17 +3,20 @@ package com.brianlu.trashme.core;
 import android.util.Log;
 
 import com.brianlu.trashme.model.Result;
+import com.brianlu.trashme.model.StompMessageModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 
 import java.util.Map;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
+import ua.naiksoftware.stomp.dto.StompMessage;
 
 public interface ServiceExtension {
 
@@ -62,4 +65,17 @@ public interface ServiceExtension {
               return gson.fromJson(jsonElement, cls);
             });
   }
+
+
+  default Observable<StompMessageModel> mapToMessageModel(
+      Flowable<StompMessage> messageObservable) {
+
+      return messageObservable.map(StompMessage::getPayload)
+          .doOnNext(System.out::println)
+          .map(s -> new GsonBuilder().create().fromJson(s, StompMessageModel.class))
+          .doOnNext(System.out::println)
+          .toObservable();
+  }
+
+
 }

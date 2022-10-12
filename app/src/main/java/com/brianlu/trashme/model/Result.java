@@ -1,6 +1,6 @@
 package com.brianlu.trashme.model;
 
-import com.brianlu.trashme.exception.APIException;
+import com.brianlu.trashme.exception.ApiException;
 
 import java.util.Map;
 
@@ -12,9 +12,9 @@ public class Result {
   private String message;
   private Map<String, Object> payload;
 
-  public void checkAPIResultOk() throws APIException {
+  public void checkAPIResultOk() throws ApiException {
     if (code != 1) {
-      throw new APIException(code, message);
+      throw new ApiException(code, message);
     }
   }
 
