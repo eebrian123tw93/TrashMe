@@ -19,13 +19,13 @@
         android:id="@+id/imageView"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:contentDescription="TODO"
         app:layout_constraintBottom_toTopOf="@+id/email_cardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/logo"
+        android:contentDescription="" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/email_cardView"
@@ -50,7 +50,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/email" />
+                app:srcCompat="@drawable/email"
+                android:contentDescription="" />
 
             <EditText
                 android:id="@+id/email_editText"
@@ -68,7 +69,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView3"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="TextFields" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
@@ -108,7 +110,7 @@
                 android:background="@color/transparent"
                 android:ems="10"
                 android:hint="密碼"
-                android:inputType="textPersonName"
+                android:inputType="textPassword"
                 android:textColorHint="@color/pink"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

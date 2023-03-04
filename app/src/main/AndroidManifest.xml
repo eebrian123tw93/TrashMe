@@ -33,6 +33,7 @@
         <activity android:name=".home.remarks.RemarksActivity" />
         <activity
             android:name=".logo.LogoActivity"
+            android:exported="true"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
